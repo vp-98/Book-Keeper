@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_appstats"
+        android:icon="@drawable/nav_appstats_icon"
+        android:title="@string/appstats_icon_text"
+        />
+
+    <item
+        android:id="@+id/nav_search"
+        android:icon="@drawable/nav_search_icon"
+        android:title="@string/search_icon_text"
+        />
+
+    <item
+        android:id="@+id/nav_bookList"
+        android:icon="@drawable/nav_booklist_icon"
+        android:title="@string/booklist_icon_text"
+        />
+
+    <item
+        android:id="@+id/nav_add"
+        android:icon="@drawable/nav_add_icon"
+        android:title="@string/add_icon_text"
+        />
+
+    <item
+        android:id="@+id/nav_settings"
+        android:icon="@drawable/nav_settings_icon"
+        android:title="@string/settings_icon_text"
+        />
+
+</menu>

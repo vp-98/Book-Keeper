@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/generic_background"
+    >
+
+    <RelativeLayout
+        android:orientation="horizontal"
+        android:id="@+id/settings_title"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:paddingTop="7dp">
+        <TextView
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/shape_generic_title_cardview"
+            android:text="@string/settings_title_string"
+            android:textColor="@color/primary_gold"
+            android:textSize="22sp"
+            android:textStyle="italic"
+            android:paddingTop="4dp"
+            android:textAlignment="center"/>
+    </RelativeLayout>
+</RelativeLayout>

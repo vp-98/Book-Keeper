@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<group android:checkableBehavior="all">
+    <item
+        android:id="@+id/filter_read_books"
+        android:title="@string/filter_read"
+        />
+    <item
+        android:id="@+id/filter_not_read_books"
+        android:title="@string/filter_not_read"
+        />
+</group>
+</menu>

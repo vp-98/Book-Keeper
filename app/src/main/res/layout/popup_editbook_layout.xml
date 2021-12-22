@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:padding="10dp">
+
+    <TextView
+        android:id="@+id/pop_title_banner"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:text="@string/pop_edit_title"
+        android:textColor="@color/primary_gold"
+        android:textSize="22sp"
+        android:textStyle="italic"
+        android:paddingTop="4dp"
+        android:textAlignment="center"
+        android:background="@drawable/shape_generic_title_cardview"
+        />
+
+    <TextView
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="50dp"
+        android:id="@+id/pop_title_str"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/pop_title_banner"
+        android:text="@string/pop_title_str"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textColor="@color/text_black"/>
+
+    <TextView
+        android:id="@+id/pop_author_str"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/pop_bookTitleET"
+        android:layout_marginTop="30dp"
+        android:text="@string/pop_author_str"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textColor="@color/text_black"/>
+
+    <EditText
+        android:id="@+id/pop_bookAuthorET"
+        android:layout_width="395dp"
+        android:layout_height="43dp"
+        android:layout_marginLeft="5dp"
+        android:layout_below="@id/pop_author_str"
+        android:autofillHints="@string/pop_author_hint"
+        android:gravity="center_horizontal"
+        android:hint="@string/pop_author_hint"
+        android:textAlignment="center"
+        android:textColor="#3A3333"
+        android:textColorHint="#3A3333"
+        android:textSize="18sp"
+        android:layout_centerHorizontal="true" />
+
+    <EditText
+        android:id="@+id/pop_bookTitleET"
+        android:layout_width="395dp"
+        android:layout_height="43dp"
+        android:layout_below="@id/pop_title_str"
+        android:autofillHints="@string/pop_title_hint"
+        android:gravity="center_horizontal"
+        android:hint="@string/pop_title_hint"
+        android:textAlignment="center"
+        android:textColor="#3A3333"
+        android:textColorHint="#3A3333"
+        android:textSize="18sp"
+        android:layout_centerHorizontal="true"
+         />
+
+    <Button
+        android:id="@+id/pop_update_btn"
+        android:layout_width="110dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="15dp"
+        android:layout_below="@id/pop_read_switch"
+        android:layout_marginTop="50dp"
+        android:layout_alignParentLeft="true"
+        android:backgroundTint="@color/primary"
+        android:text="@string/pop_update_btn"
+        android:textColor="@color/white" />
+
+
+    <Button
+        android:id="@+id/pop_cancel_btn"
+        android:layout_width="110dp"
+        android:layout_height="50dp"
+        android:layout_marginRight="15dp"
+        android:backgroundTint="@color/primary"
+        android:layout_marginTop="50dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/pop_read_switch"
+        android:text="@string/pop_cancel_btn"
+        android:textColor="@color/white" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/pop_read_switch"
+        android:layout_marginTop="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/pop_bookAuthorET"
+        android:layout_centerHorizontal="true"
+        android:text="@string/read_status_true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pop_bookAuthorET" />
+
+
+</RelativeLayout>

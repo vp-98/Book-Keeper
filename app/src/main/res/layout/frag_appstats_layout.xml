@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/generic_background">
+
+    <RelativeLayout
+        android:orientation="horizontal"
+        android:id="@+id/appstats_title"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:paddingTop="7dp">
+
+        <TextView
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/shape_generic_title_cardview"
+            android:text="@string/appstats_title"
+            android:textColor="@color/primary_gold"
+            android:textSize="22sp"
+            android:textStyle="italic"
+            android:paddingTop="4dp"
+            android:textAlignment="center"/>
+
+    </RelativeLayout>
+
+    <ScrollView
+        android:id="@+id/appstats_scrollView"
+        android:layout_below="@id/appstats_title"
+        android:layout_marginTop="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="25dp">
+
+        <RelativeLayout
+            android:id="@+id/appstats_relative"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!-- Book Stats view, Changes must be made in the class -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/appstats_topCardView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="10dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:id="@+id/appstats_bookstat_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/appstats_storedStats"
+                        android:textSize="20sp"
+                        android:textStyle="italic"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/appstats_readbooks"
+                        android:layout_width="155dp"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/appstats_numbooks"
+                        android:layout_toEndOf="@+id/appstats_read_str"
+                        android:padding="10dp"
+                        android:text="@string/appstats_no_stats"
+                        android:textSize="16sp"
+                        android:textStyle="normal"
+                        android:textAlignment="center"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/appstats_numbooks" />
+
+                    <TextView
+                        android:id="@+id/appstats_numbooks_str"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/appstats_book_count"
+                        android:textSize="17sp"
+                        android:textStyle="bold"
+                        android:padding="10dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/appstats_bookstat_title" />
+
+                    <TextView
+                        android:id="@+id/appstats_read_str"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/appstats_numbooks_str"
+                        android:padding="10dp"
+                        android:text="@string/appstats_read_count"
+                        android:textSize="17sp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/appstats_numbooks" />
+
+                    <TextView
+                        android:id="@+id/appstats_not_read_str"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/appstats_read_str"
+                        android:padding="10dp"
+                        android:text="@string/appstats_not_read_count"
+                        android:textSize="17sp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/appstats_read_str" />
+
+                    <TextView
+                        android:id="@+id/appstats_numbooks"
+                        android:layout_width="155dp"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@id/appstats_numbooks_str"
+                        android:padding="10dp"
+                        android:text="@string/appstats_no_stats"
+                        android:textSize="16sp"
+                        android:textStyle="normal"
+                        android:textAlignment="center"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/appstats_bookstat_title" />
+
+                    <TextView
+                        android:id="@+id/appstats_notreadbooks"
+                        android:layout_width="155dp"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/appstats_readbooks"
+                        android:layout_toEndOf="@+id/appstats_not_read_str"
+                        android:padding="10dp"
+                        android:text="@string/appstats_no_stats"
+                        android:textSize="16sp"
+                        android:textStyle="normal"
+                        android:textAlignment="center"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/appstats_readbooks" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <!-- General Stats view, NO CHANGES HERE, CHANGES MUST BE IN R.STRINGS-->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/appstats_general_cardview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/appstats_topCardView"
+                app:cardCornerRadius="10dp"
+                android:layout_marginTop="25dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="15dp">
+
+                    <TextView
+                        android:id="@+id/textView8"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/appstats_general_app_stats"
+                        android:textSize="20sp"
+                        android:textStyle="italic"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+
+                    <TextView
+                        android:id="@+id/appstats_db_version_number"
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:text="@string/appstats_database_version_number"
+                        android:textAlignment="center"
+                        android:textSize="16sp"
+                        android:textStyle="normal"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/appstats_version_number" />
+
+                    <TextView
+                        android:id="@+id/textView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/appstats_app_version"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:padding="10dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView8" />
+
+                    <TextView
+                        android:id="@+id/textView5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/appstats_database_version"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:padding="10dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+                    <TextView
+                        android:id="@+id/appstats_version_number"
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/appstats_app_version_number"
+                        android:textAlignment="center"
+                        android:textSize="16sp"
+                        android:textStyle="normal"
+                        android:padding="10dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView8" />
+
+                    <TextView
+                        android:id="@+id/appstats_date_value"
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/appstats_modification_data_value"
+                        android:textAlignment="center"
+                        android:textSize="16sp"
+                        android:textStyle="normal"
+                        android:padding="10dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/appstats_db_version_number" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/appstats_modification_data"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:padding="10dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView5" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <!-- Change Log -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="10dp"
+                android:layout_below="@+id/appstats_general_cardview"
+                android:layout_marginTop="25dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="15dp">
+
+                    <TextView
+                        android:id="@+id/changeLog_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/appstats_changeLog"
+                        android:textSize="20sp"
+                        android:textStyle="italic"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:layout_marginTop="15dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/change_log"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:textSize="15sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/changeLog_title" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

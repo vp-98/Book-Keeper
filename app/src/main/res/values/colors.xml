@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="primary">#730707</color>
+    <color name="primary_dark">#550B0B</color>
+    <color name="primary_gold">#ffd097</color>
+
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <!-- Backgrounds and Other colors -->
+    <color name="off_white_background">#BFBBBB</color>
+    <color name="generic_background">#e3e3e5</color>
+
+    <!-- Text Colors -->
+    <color name="text_black">#0E0F17</color>
+
+</resources>

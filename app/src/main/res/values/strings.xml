@@ -1,0 +1,77 @@
+<resources>
+    <string name="app_name">Book Keeper</string>
+
+    <!-- Strings For Bottom Navigation Menu -->
+    <string name="add_icon_text">Add Book</string>
+    <string name="booklist_icon_text">Stored Books</string>
+    <string name="appstats_icon_text">App Stats</string>
+    <string name="settings_icon_text">Settings</string>
+    <string name="search_icon_text">Search Here</string>
+
+    <!-- Strings For Item Context Menu -->
+    <string name="context_delete_item">Delete Book</string>
+    <string name="context_edit_item">Edit Book</string>
+    <string name="context_cancel">Cancel</string>
+
+    <!-- Strings For Filter Menu -->
+    <string name="filter_read">Read Books</string>
+    <string name="filter_not_read">Not Read Books</string>
+
+    <!-- Strings For addBook Fragment layout and class -->
+    <string name="addbook_title_page">Add a New Book</string>
+    <string name="read_status_false">Not Read Yet</string>
+    <string name="read_status_true">Finished Reading</string>
+    <string name="addbook_action">Add Book</string>
+    <string name="addbook_title_field">Title</string>
+    <string name="addbook_title_hint">Enter Title</string>
+    <string name="addbook_author_field">Author</string>
+    <string name="addbook_author_hint">Enter Author</string>
+    <string name="addbook_reset">Reset</string>
+
+    <!-- Strings For Author and Title usages -->
+    <string name="title_field_hint">Title</string>
+    <string name="author_field_hint">Author</string>
+
+    <!-- Strings For PopupMenu -->
+    <string name="pop_is_read_switch_true">Finished Reading</string>
+    <string name="pop_is_read_switch_false">Not Read Yet</string>
+    <string name="pop_cancel_btn">Cancel</string>
+    <string name="pop_update_btn">Update</string>
+    <string name="pop_title_str">Title</string>
+    <string name="pop_author_str">Author</string>
+    <string name="pop_author_hint">Change Author</string>
+    <string name="pop_title_hint">Change Title</string>
+    <string name="pop_edit_title">Edit A Book</string>
+
+    <!-- Strings For bookView Fragment layout and class -->
+    <string name="book_view_title_string">My Books</string>
+
+    <!-- Strings For bookView Fragment layout and class -->
+    <string name="settings_title_string">Settings</string>
+
+    <!-- Strings For appStats Fragment layout and class -->
+    <string name="appstats_title">App Stats</string>
+    <string name="appstats_storedStats">Stats About Books</string>
+    <string name="appstats_general_app_stats">General App Stats</string>
+    <string name="appstats_no_stats">Nothing To Report!</string>
+    <string name="appstats_book_count">Number of Books</string>
+    <string name="appstats_read_count">Books Read</string>
+    <string name="appstats_not_read_count">Books Not Read</string>
+
+    <string name="appstats_app_version">App Version</string>
+    <string name="appstats_database_version">Database Version</string>
+    <string name="appstats_modification_data">Last Update</string>
+    <string name="appstats_app_version_number">1.0.01</string>
+    <string name="appstats_database_version_number">1</string>
+    <string name="appstats_modification_data_value">8 December 2021</string>
+
+    <string name="appstats_changeLog">Change Log and What\'s New</string>
+    <string name="change_log">
+        - Fixed transition animations so that they only occur when moving to a different page.\n\n
+        - Correct navigation item is selected at start.\n\n
+        - Navigation menu does not move up when keyboard is opened!\n\n
+        - Change status bar color to match the app colors\n\n
+        - Changed the switch activated color to gold to match theme\n\n
+    </string>
+
+</resources>
