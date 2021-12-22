@@ -30,14 +30,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TAG = "DatabaseHelper";
 
     // Database Information
-    private static final int DATABASE_VERSION_ON_MOBILE_DEVICE = 1;
-    private static final int DATABASE_VERSION_ON_SIMULATOR = 1;
+    private static final int DATABASE_VERSION_ON_MOBILE_DEVICE = 2;  // Modifications
+    private static final int DATABASE_VERSION_ON_SIMULATOR = 2;      // Modifications
 
     // Static strings for the table columns
     private static final String TABLE_NAME = "book_table";
     private static final String COL_ID = "id";
     private static final String COL_TITLE = "title";
     private static final String COL_TITLE_LOWERCASE = "lowercase_title";
+    private static final String COL_SHELF_LOCATION = "shelf_location";
     private static final String COL_AUTHOR = "author";
     private static final String COL_IS_READ = "is_read";
 
@@ -47,7 +48,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      *   the actual user's phone, otherwise make sure to switch back to the correct one for testing.
      */
     public DatabaseHelper(Context context) {
-        super(context, TABLE_NAME, null,1);
+        super(context, TABLE_NAME, null,2);
         Log.d(TAG, "DatabaseHelper: Database version simulator: " + DATABASE_VERSION_ON_SIMULATOR);
         Log.d(TAG, "DatabaseHelper: Database version mobile device: " + DATABASE_VERSION_ON_MOBILE_DEVICE);
     }
@@ -57,16 +58,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Log.d(TAG, "onCreate: Creating Database " + TABLE_NAME);
         String createTable = "CREATE TABLE " + TABLE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + COL_TITLE + " TEXT, " + COL_TITLE_LOWERCASE + " TEXT, " + COL_AUTHOR + " TEXT, "
-                + COL_IS_READ + " INTEGER)";
+                + COL_IS_READ + " INTEGER, " + COL_SHELF_LOCATION + " TEXT)";
+
         sqLiteDatabase.execSQL(createTable);
     }
     //==============================================================================================
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
         if (oldVersion < newVersion) {
-            Log.d(TAG, "onUpgrade: Recreating the database table");
-            sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
-            onCreate(sqLiteDatabase);
+            Log.d(TAG, "onUpgrade: Creating the database table");
+            sqLiteDatabase.execSQL("ALTER TABLE " + TABLE_NAME + " ADD COLUMN " +
+                    COL_SHELF_LOCATION + " TEXT DEFAULT 'Default'");
+            Log.d(TAG, "onUpgrade: Added new column");
+            //sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
+            //onCreate(sqLiteDatabase);
         }
     }
     //==============================================================================================
@@ -95,7 +100,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * @post-condition: returns 0 if item not added, returns 1 if added, returns 2
      *    if already present
      */
-    public boolean addData(String title, String author, String titleLowerCase, boolean readStatus) {
+    public boolean addData(String title, String author, String titleLowerCase, boolean readStatus,
+        String shelfLocation) {
         Log.d(TAG, "addData: Adding a new Book to the database");
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -107,6 +113,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             contentValues.put(COL_TITLE_LOWERCASE,titleLowerCase);
             contentValues.put(COL_AUTHOR, author);
             contentValues.put(COL_IS_READ, readStatus? 1 : 0);
+            contentValues.put(COL_SHELF_LOCATION, shelfLocation);
 
             // Get status of the insertion
             long result = db.insert(TABLE_NAME, null, contentValues);
@@ -155,9 +162,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 String titleLower = data.getString(2);
                 String author = data.getString(3);
                 boolean readStatus = data.getInt(4) == 1;
+                String shelfLocation = data.getString(5);
 
                 // Create a new book with that
-                books.add(new BookModel(title, titleLower, author, readStatus, ID));
+                books.add(new BookModel(title, titleLower, author, readStatus, ID, shelfLocation));
             } while(data.moveToNext());
 
         } else {
@@ -224,6 +232,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cv.put(COL_AUTHOR, book.getAuthor());
         cv.put(COL_TITLE_LOWERCASE, book.getTitleLowerCase());
         cv.put(COL_IS_READ, book.getReadStatus());
+        cv.put(COL_SHELF_LOCATION, book.getShelfLocation());
 
         db.update(TABLE_NAME, cv, "ID = ?", new String[]{Integer.toString(id)});
         db.close();

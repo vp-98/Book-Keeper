@@ -2,8 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/generic_background"
-    >
+    android:background="@color/generic_background">
 
     <RelativeLayout
         android:orientation="horizontal"
@@ -11,17 +10,58 @@
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:paddingTop="7dp">
+
         <TextView
-            android:layout_marginRight="20dp"
-            android:layout_marginLeft="20dp"
+            android:id="@+id/settings_title_tv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
             android:background="@drawable/shape_generic_title_cardview"
+            android:paddingTop="4dp"
             android:text="@string/settings_title_string"
+            android:textAlignment="center"
             android:textColor="@color/primary_gold"
             android:textSize="22sp"
-            android:textStyle="italic"
-            android:paddingTop="4dp"
-            android:textAlignment="center"/>
+            android:textStyle="italic" />
+
+
     </RelativeLayout>
+    <TextView
+        android:layout_marginTop="50dp"
+        android:layout_marginLeft="15dp"
+        android:id="@+id/settings_shelf_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/settings_title"
+        android:text="@string/settings_shelf_tv"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:textSize="20sp"/>
+    <EditText
+        android:padding="15dp"
+        android:id="@+id/settings_shelf_et"
+        android:layout_marginTop="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/settings_shelf_tv" />
+
+    <Button
+        android:id="@+id/settings_add_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/settings_shelf_et"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="2dp"
+        android:backgroundTint="@color/primary"
+        android:text="@string/settings_submit_btn" />
+
+    <ListView
+        android:id="@+id/settings_shelf_names_lv"
+        android:layout_below="@id/settings_add_btn"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="10dp"/>
+    
 </RelativeLayout>

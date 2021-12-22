@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    android:padding="10dp">
+    android:padding="7dp">
 
     <TextView
         android:id="@+id/pop_title_banner"
@@ -18,8 +18,7 @@
         android:textStyle="italic"
         android:paddingTop="4dp"
         android:textAlignment="center"
-        android:background="@drawable/shape_generic_title_cardview"
-        />
+        android:background="@drawable/shape_generic_title_cardview" />
 
     <TextView
         android:layout_marginLeft="5dp"
@@ -71,8 +70,7 @@
         android:textColor="#3A3333"
         android:textColorHint="#3A3333"
         android:textSize="18sp"
-        android:layout_centerHorizontal="true"
-         />
+        android:layout_centerHorizontal="true" />
 
     <Button
         android:id="@+id/pop_update_btn"
@@ -85,7 +83,6 @@
         android:backgroundTint="@color/primary"
         android:text="@string/pop_update_btn"
         android:textColor="@color/white" />
-
 
     <Button
         android:id="@+id/pop_cancel_btn"
@@ -101,15 +98,26 @@
 
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/pop_read_switch"
-        android:layout_marginTop="30dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/pop_bookAuthorET"
-        android:layout_centerHorizontal="true"
+        android:layout_marginTop="29dp"
         android:text="@string/read_status_true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:theme="@style/Switches"
+        android:layout_alignParentEnd="true"
+        android:paddingRight="10dp"
         app:layout_constraintTop_toBottomOf="@+id/pop_bookAuthorET" />
 
+    <Spinner
+        android:id="@+id/popup_spinner"
+        android:layout_width="150dp"
+        android:layout_height="30dp"
+        android:layout_below="@+id/pop_bookAuthorET"
+        android:layout_marginTop="40dp"
+        android:layout_marginRight="45dp"
+        android:spinnerMode="dropdown"
+        android:textAlignment="center"
+        android:paddingLeft="10dp"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>

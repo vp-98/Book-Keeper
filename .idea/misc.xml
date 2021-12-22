@@ -8,10 +8,17 @@
         <entry key="..\:/App Development/BookKeeperV2/app/src/main/res/layout/popup_editbook_layout.xml" value="0.7081497797356828" />
         <entry key="..\:/App Development/BookKeeperV2/app/src/main/res/menu/filter_menu.xml" value="1.063231850117096" />
         <entry key="..\:/App Development/BookKeeperV2/app/src/main/res/menu/item_context_menu.xml" value="1.063231850117096" />
+        <entry key="..\:/Users/vrajp/CLASS/App Development/Book-Keeper/app/src/main/res/layout/frag_addbook_layout.xml" value="0.25" />
+        <entry key="..\:/Users/vrajp/CLASS/App Development/Book-Keeper/app/src/main/res/layout/frag_appstats_layout.xml" value="0.209375" />
+        <entry key="..\:/Users/vrajp/CLASS/App Development/Book-Keeper/app/src/main/res/layout/frag_bookview_layout.xml" value="0.209375" />
+        <entry key="..\:/Users/vrajp/CLASS/App Development/Book-Keeper/app/src/main/res/layout/frag_search_layout.xml" value="0.209375" />
+        <entry key="..\:/Users/vrajp/CLASS/App Development/Book-Keeper/app/src/main/res/layout/frag_settings_layout.xml" value="0.209375" />
+        <entry key="..\:/Users/vrajp/CLASS/App Development/Book-Keeper/app/src/main/res/layout/popup_editbook_layout.xml" value="0.209375" />
+        <entry key="..\:/Users/vrajp/CLASS/App Development/Book-Keeper/app/src/main/res/layout/recycler_single_item.xml" value="0.33" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

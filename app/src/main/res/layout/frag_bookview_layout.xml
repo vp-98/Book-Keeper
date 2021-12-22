@@ -13,17 +13,17 @@
         android:paddingTop="7dp">
 
         <TextView
-            android:layout_marginRight="20dp"
-            android:layout_marginLeft="20dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
             android:background="@drawable/shape_generic_title_cardview"
+            android:paddingTop="4dp"
             android:text="@string/book_view_title_string"
+            android:textAlignment="center"
             android:textColor="@color/primary_gold"
             android:textSize="22sp"
-            android:textStyle="italic"
-            android:paddingTop="4dp"
-            android:textAlignment="center"/>
+            android:textStyle="italic" />
 
     </RelativeLayout>
 

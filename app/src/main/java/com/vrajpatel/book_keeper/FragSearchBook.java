@@ -18,8 +18,6 @@ package com.vrajpatel.book_keeper;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.media.Image;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -30,23 +28,27 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
-import android.widget.SearchView;
+
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class FragSearchBook extends Fragment implements PopupMenu.OnMenuItemClickListener,
         RecyclerViewAdapter.onDeleteCallListener, RecyclerViewAdapter.onEditCallListener {
@@ -76,6 +78,7 @@ public class FragSearchBook extends Fragment implements PopupMenu.OnMenuItemClic
     private Button cancelBTN, updateBTN;
     private SwitchCompat readSwitch;
     private EditText titleField, authorField;
+    private Spinner spinner;
     //----------------------------------------------
 
     @Nullable
@@ -242,6 +245,14 @@ public class FragSearchBook extends Fragment implements PopupMenu.OnMenuItemClic
         cancelBTN = (Button) popupView.findViewById(R.id.pop_cancel_btn);
         updateBTN = (Button) popupView.findViewById(R.id.pop_update_btn);
         readSwitch = (SwitchCompat) popupView.findViewById(R.id.pop_read_switch);
+        spinner = (Spinner) popupView.findViewById(R.id.popup_spinner);
+
+        // Add shelves the spinner
+        ArrayList<String> storedNames = new ArrayList<String>();
+        storedNames.addAll(loadShelfNames());
+        ArrayAdapter<String> dropDownArrayAdapter = new ArrayAdapter<String>(getContext(),
+                android.R.layout.simple_spinner_dropdown_item, storedNames);
+        spinner.setAdapter(dropDownArrayAdapter);
 
         // Set fields to current book information
         titleField.setText(book.getTitle());
@@ -276,17 +287,29 @@ public class FragSearchBook extends Fragment implements PopupMenu.OnMenuItemClic
                 // Retrieve data from the text field and update book
                 String title = titleField.getText().toString();
                 String author = authorField.getText().toString();
+                String shelfLocation = spinner.getSelectedItem().toString();
                 boolean newStatus = readSwitch.isChecked();
 
                 book.setAuthor(author);
                 book.setTitle(title);
                 book.setTitleLowerCase(title.toLowerCase());
                 book.setReadStatus(newStatus);
+                book.setShelfLocation(shelfLocation);
 
                 mDatabaseHelper.updateCol(book);
                 adapter.notifyDataSetChanged();
                 dialog.dismiss();
             }
         });
+    }
+    private Set<String> loadShelfNames() {
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences(MainActivity.SHARED_PREFERENCES,
+                MainActivity.MODE_PRIVATE);
+        Set<String> set = sharedPreferences.getStringSet(MainActivity.SET, new HashSet<String>());
+        set.remove("");
+        if (!set.contains("Default")) {
+            set.add("Default");
+        }
+        return set;
     }
 }

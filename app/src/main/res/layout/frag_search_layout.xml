@@ -3,17 +3,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/generic_background"
-    android:padding="15dp">
+    android:paddingTop="7dp"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
+    android:paddingBottom="15dp">
 
     <LinearLayout
         android:orientation="horizontal"
+        android:layout_marginTop="1dp"
         android:id="@+id/linear_layout_searchbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/shape_searchbar_background"
         android:weightSum="100">
 
-        <SearchView
+        <androidx.appcompat.widget.SearchView
             android:id="@+id/search_bar"
             android:layout_width="match_parent"
             android:layout_height="40dp"

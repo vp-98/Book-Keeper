@@ -33,6 +33,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,6 +57,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         private static final String TAG = "MyViewHolder";
         TextView tvTitleField;         // Item in layout to fill title
         TextView tvAuthorField;        // Item in layout to fill author
+        TextView tvLocationField;      // Item in layout to fill location
         ImageButton moreOptions;       // Clickable feature on the recycler view
         ImageView readIcon;            // Item in layout to set check mark
         onDeleteCallListener deleteCallListener2;
@@ -68,6 +71,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             super(itemView);
             tvTitleField = itemView.findViewById(R.id.title_textView);
             tvAuthorField = itemView.findViewById(R.id.author_textView);
+            tvLocationField = itemView.findViewById(R.id.location_textView);
             moreOptions = itemView.findViewById(R.id.more_options_icon);
             readIcon = itemView.findViewById(R.id.recycler_view_checkIcon);
             moreOptions.setOnClickListener(this);
@@ -157,6 +161,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         // Insert the information from each book into the slots
         holder.tvTitleField.setText(books.get(position).getTitle());
         holder.tvAuthorField.setText(books.get(position).getAuthor());
+        holder.tvLocationField.setText(books.get(position).getShelfLocation());
         if (books.get(position).getReadStatus()) {
             holder.readIcon.setImageResource(R.drawable.bookview_check_icon);
         } else {

@@ -21,15 +21,18 @@ public class BookModel {
     private String title;
     private String titleLowerCase;
     private String author;
+    private String shelfLocation;
     private boolean readStatus;
     private int ID;
 
-    public BookModel(String title, String titleLowerCase, String author, boolean readStatus, int ID) {
+    public BookModel(String title, String titleLowerCase, String author,
+                     boolean readStatus, int ID, String shelfLocation) {
         this.title = title;
         this.titleLowerCase = titleLowerCase;
         this.author = author;
         this.readStatus = readStatus;
         this.ID = ID;
+        this.shelfLocation = shelfLocation;
     }
 
     public String getTitle() {return title;}
@@ -43,6 +46,9 @@ public class BookModel {
 
     public boolean getReadStatus() {return readStatus;}
     public void setReadStatus(boolean readStatus) {this.readStatus = readStatus;}
+
+    public String getShelfLocation() {return shelfLocation;}
+    public void setShelfLocation(String shelfLocation) {this.shelfLocation = shelfLocation;}
 
     public int getID() {return ID;}
     public void setID(int ID) {this.ID = ID;}

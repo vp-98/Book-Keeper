@@ -16,6 +16,7 @@
 
 package com.vrajpatel.book_keeper;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -36,14 +37,19 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+
 public class FragAddBook extends Fragment {
 
     private static final String TAG = "FragAddBook";
-    private EditText titleField;
-    private EditText authorField;
+    private DatabaseHelper mDatabaseHelper;
     private Button submitBTN, resetBTN;
     private SwitchCompat readStatus;
-    private DatabaseHelper mDatabaseHelper;
+    private EditText authorField;
+    private EditText titleField;
+    private Spinner spinner;
 
     @Nullable
     @Override
@@ -51,11 +57,12 @@ public class FragAddBook extends Fragment {
     savedInstanceState) {
         View view = inflater.inflate(R.layout.frag_addbook_layout, container, false);
 
-        titleField = view.findViewById(R.id.editText);
-        authorField = view.findViewById(R.id.editText2);
+        titleField = view.findViewById(R.id.addBook_title_edit_text);
+        authorField = view.findViewById(R.id.addBook_author_edit_text);
         submitBTN = view.findViewById(R.id.button);
         readStatus = view.findViewById(R.id.my_switch);
         resetBTN = view.findViewById(R.id.addbook_resetBTN);
+        spinner = view.findViewById(R.id.addBook_spinner);
 
         return view;
     }
@@ -64,6 +71,12 @@ public class FragAddBook extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mDatabaseHelper = new DatabaseHelper(getContext());
+
+        ArrayList<String> storedNames = new ArrayList<String>();
+        storedNames.addAll(loadShelfNames());
+        ArrayAdapter<String> dropDownArrayAdapter = new ArrayAdapter<String>(getContext(),
+                android.R.layout.simple_spinner_dropdown_item, storedNames);
+        spinner.setAdapter(dropDownArrayAdapter);
 
         resetBTN.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,11 +104,12 @@ public class FragAddBook extends Fragment {
             public void onClick(View v) {
                 String title = titleField.getText().toString();
                 String author = authorField.getText().toString();
+                String shelfLocation = spinner.getSelectedItem().toString();
                 boolean readBook = readStatus.isChecked();
 
                 if (title.length() > 0) {
                     // Attempt to add to DB and report success/failure
-                    if (mDatabaseHelper.addData(title, author, title.toLowerCase(), readBook)) {
+                    if (mDatabaseHelper.addData(title, author, title.toLowerCase(), readBook, shelfLocation)) {
                         String message = "Title: " + title + ", Author: " + author;
                         Log.d(TAG, "onClick: Retrieved Information: " + message);
                         displayMessageMaker("Book Added!", 0, null);
@@ -107,6 +121,7 @@ public class FragAddBook extends Fragment {
                 } else {
                     displayMessageMaker("Please enter valid title!",0, null);
                 }
+                titleField.requestFocus();
             }
         });
     }
@@ -141,5 +156,16 @@ public class FragAddBook extends Fragment {
                 Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
                 break;
         }
+    }
+
+    private Set<String> loadShelfNames() {
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences(MainActivity.SHARED_PREFERENCES,
+                MainActivity.MODE_PRIVATE);
+        Set<String> set = sharedPreferences.getStringSet(MainActivity.SET, new HashSet<String>());
+        set.remove("");
+        if (!set.contains("Default")) {
+            set.add("Default");
+        }
+        return set;
     }
 }

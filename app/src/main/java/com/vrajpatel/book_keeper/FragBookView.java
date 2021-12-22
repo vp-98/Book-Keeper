@@ -17,6 +17,7 @@
 package com.vrajpatel.book_keeper;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -32,6 +33,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.Toast;
 
@@ -46,6 +48,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class FragBookView extends Fragment implements RecyclerViewAdapter.onDeleteCallListener, RecyclerViewAdapter.onEditCallListener {
 
@@ -62,6 +66,7 @@ public class FragBookView extends Fragment implements RecyclerViewAdapter.onDele
     private Button cancelBTN, updateBTN;
     private SwitchCompat readSwitch;
     private EditText titleField, authorField;
+    private Spinner spinner;
     //----------------------------------------------
 
     @Nullable
@@ -133,6 +138,14 @@ public class FragBookView extends Fragment implements RecyclerViewAdapter.onDele
         cancelBTN = (Button) popupView.findViewById(R.id.pop_cancel_btn);
         updateBTN = (Button) popupView.findViewById(R.id.pop_update_btn);
         readSwitch = (SwitchCompat) popupView.findViewById(R.id.pop_read_switch);
+        spinner = (Spinner) popupView.findViewById(R.id.popup_spinner);
+
+        // Add shelves the spinner
+        ArrayList<String> storedNames = new ArrayList<String>();
+        storedNames.addAll(loadShelfNames());
+        ArrayAdapter<String> dropDownArrayAdapter = new ArrayAdapter<String>(getContext(),
+                android.R.layout.simple_spinner_dropdown_item, storedNames);
+        spinner.setAdapter(dropDownArrayAdapter);
 
         // Set fields to current book information
         titleField.setText(book.getTitle());
@@ -166,17 +179,30 @@ public class FragBookView extends Fragment implements RecyclerViewAdapter.onDele
                 // Retrieve data from the text field and update book
                 String title = titleField.getText().toString();
                 String author = authorField.getText().toString();
+                String shelfLocation = spinner.getSelectedItem().toString();
                 boolean newStatus = readSwitch.isChecked();
 
                 book.setAuthor(author);
                 book.setTitle(title);
                 book.setTitleLowerCase(title.toLowerCase());
                 book.setReadStatus(newStatus);
+                book.setShelfLocation(shelfLocation);
 
                 mDatabaseHelper.updateCol(book);
                 adapter.notifyDataSetChanged();
                 dialog.dismiss();
             }
         });
+    }
+
+    private Set<String> loadShelfNames() {
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences(MainActivity.SHARED_PREFERENCES,
+                MainActivity.MODE_PRIVATE);
+        Set<String> set = sharedPreferences.getStringSet(MainActivity.SET, new HashSet<String>());
+        set.remove("");
+        if (!set.contains("Default")) {
+            set.add("Default");
+        }
+        return set;
     }
 }
