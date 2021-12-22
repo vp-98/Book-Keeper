@@ -50,8 +50,10 @@
 
     <!-- Strings For bookView Fragment layout and class -->
     <string name="settings_title_string">Settings</string>
-    <string name="settings_shelf_tv">Enter shelf name</string>
-    <string name="settings_submit_btn">Add Shelf</string>
+    <string name="settings_shelf_card">Manage Shelves</string>
+    <string name="settings_shelf_tv">Add New Shelf:</string>
+    <string name="settings_submit_btn">Add</string>
+    <string name="settings_stored_tv">Stored Shelves:</string>
 
     <!-- Strings For appStats Fragment layout and class -->
     <string name="appstats_title">App Stats</string>

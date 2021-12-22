@@ -22,8 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_weight="100"
-            android:queryBackground="@android:color/transparent"
-            />
+            android:queryBackground="@android:color/transparent"/>
 
         <ImageView
             android:id="@+id/filter_icon"
@@ -36,16 +35,11 @@
             android:src="@drawable/icon_filter" />
     </LinearLayout>
 
-    <View
-        android:id="@+id/view_below_bar"
-        android:layout_width="match_parent"
-        android:layout_height="15dp"
-        android:layout_below="@id/linear_layout_searchbar"/>
-
     <androidx.recyclerview.widget.RecyclerView
+        android:layout_marginTop="15dp"
         android:id="@+id/search_results"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/view_below_bar"/>
+        android:layout_below="@id/linear_layout_searchbar"/>
 
 </RelativeLayout>

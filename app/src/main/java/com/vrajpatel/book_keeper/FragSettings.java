@@ -44,7 +44,7 @@ public class FragSettings extends Fragment {
 
     private EditText shelfName;
     private Button addShelfBTN;
-    private ListView shelfs;
+    private ListView shelves;
     private ArrayList<String> shelfNames;
     private ArrayAdapter<String> arrayAdapter;
 
@@ -55,40 +55,45 @@ public class FragSettings extends Fragment {
 
         shelfName = view.findViewById(R.id.settings_shelf_et);
         addShelfBTN = view.findViewById(R.id.settings_add_btn);
-        shelfs = view.findViewById(R.id.settings_shelf_names_lv);
+        shelves = view.findViewById(R.id.settings_shelf_names_lv);
 
         shelfNames = new ArrayList<String>();
         shelfNames.addAll(loadShelfNames());
 
         arrayAdapter = new ArrayAdapter<String>(getContext(),
                 android.R.layout.simple_list_item_1, shelfNames);
-        shelfs.setAdapter(arrayAdapter);
+        shelves.setAdapter(arrayAdapter);
 
         addShelfBTN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (shelfName.getText().toString().length() != 0) {
-                    saveShelfName(shelfName.getText().toString());
+                    String newName = shelfName.getText().toString();
+                    if (!shelfNames.contains(newName)) {
+                        shelfNames.add(shelfName.getText().toString());
+                        saveShelfName(shelfName.getText().toString());
+                    }
                 } else {
                     Toast.makeText(getContext(), "Must add shelf name!", Toast.LENGTH_LONG).show();
                 }
+                arrayAdapter.notifyDataSetChanged();
             }
         });
 
         // remove temporarily
-        shelfs.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        shelves.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String message = "Removed: ";
                 if (adapterView.getItemAtPosition(i).toString() != "Default") {
+                    message += shelfNames.get(i).toString();
                     shelfNames.remove(i);
                     arrayAdapter.notifyDataSetChanged();
                     saveShelfName(null);
-                } else {
-                    Toast.makeText(getContext(), "Cannot remove 'Default' shelf", Toast.LENGTH_SHORT).show();
-                }
+                } else { message = "Cannot remove 'Default' shelf";}
+                Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
             }
         });
-
         return view;
     }
 
