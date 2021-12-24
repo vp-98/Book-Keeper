@@ -16,7 +16,6 @@
 
 package com.vrajpatel.book_keeper;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,12 +27,12 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -41,7 +40,14 @@ import java.util.Set;
 public class FragSettings extends Fragment {
 
     private static final String TAG = "Settings Fragment";
+    // View for this fragment
+    private View settingsView;
 
+    // For layout preference card
+    private Button refreshLayoutBTN;
+    private Spinner layoutChoiceSpinner;
+
+    // For shelf naming card
     private EditText shelfName;
     private Button addShelfBTN;
     private ListView shelves;
@@ -51,15 +57,44 @@ public class FragSettings extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.frag_settings_layout, container, false);
+        settingsView = inflater.inflate(R.layout.frag_settings_layout, container, false);
+        Log.d(TAG, "onCreateView: creating view of settings page");
+        initLayoutPrefCard();
+        initShelfNameCard();
+        return settingsView;
+    }
+    //==================-Functions for Initializing objects in the View-==================
+    private void initLayoutPrefCard() {
+        Log.d(TAG, "initLayoutPrefCard:  Initialized objects in the layout preference card");
+        layoutChoiceSpinner = settingsView.findViewById(R.id.settings_layout_spinner);
+        refreshLayoutBTN = settingsView.findViewById(R.id.settings_refresh_btn);
 
-        shelfName = view.findViewById(R.id.settings_shelf_et);
-        addShelfBTN = view.findViewById(R.id.settings_add_btn);
-        shelves = view.findViewById(R.id.settings_shelf_names_lv);
+        ArrayAdapter<String> options = new ArrayAdapter<String>(getContext(),
+                android.R.layout.simple_list_item_1,
+                getResources().getStringArray(R.array.settings_layout_option));
+        options.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        layoutChoiceSpinner.setAdapter(options);
+        loadViewChoice();
 
+        refreshLayoutBTN.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int pos = getItemPosition(layoutChoiceSpinner.getSelectedItem().toString());
+                saveViewChoice(pos);
+                String selected = "Saved: ";
+                selected += layoutChoiceSpinner.getSelectedItem().toString();
+                Log.d(TAG, "onClick: " + selected);
+            }
+        });
+    }
+
+    private void initShelfNameCard() {
+        Log.d(TAG, "initShelfNameCard: Initialized objects in the naming card");
+        shelfName = settingsView.findViewById(R.id.settings_shelf_et);
+        addShelfBTN = settingsView.findViewById(R.id.settings_add_btn);
+        shelves = settingsView.findViewById(R.id.settings_shelf_names_lv);
         shelfNames = new ArrayList<String>();
         shelfNames.addAll(loadShelfNames());
-
         arrayAdapter = new ArrayAdapter<String>(getContext(),
                 android.R.layout.simple_list_item_1, shelfNames);
         shelves.setAdapter(arrayAdapter);
@@ -73,6 +108,7 @@ public class FragSettings extends Fragment {
                         shelfNames.add(shelfName.getText().toString());
                         saveShelfName(shelfName.getText().toString());
                     }
+                    shelfName.setText("");
                 } else {
                     Toast.makeText(getContext(), "Must add shelf name!", Toast.LENGTH_LONG).show();
                 }
@@ -94,9 +130,43 @@ public class FragSettings extends Fragment {
                 Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
             }
         });
-        return view;
     }
 
+    //==================-Functions for Choosing view and applying that=-==================
+    private void saveViewChoice(int pos) {
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences(MainActivity.SHARED_PREFERENCES,
+                MainActivity.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(MainActivity.VIEW, pos);
+        editor.apply();
+    }
+
+    private void loadViewChoice() {
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences(MainActivity.SHARED_PREFERENCES,
+                MainActivity.MODE_PRIVATE);
+        int selectedChoice = sharedPreferences.getInt(MainActivity.VIEW, -1);
+        if (selectedChoice == -1) {
+            selectedChoice = 0;
+        }
+        layoutChoiceSpinner.setSelection(selectedChoice);
+    }
+
+    private int getItemPosition(String selectedChoice) {
+        int pos = 0;
+        switch (selectedChoice) {
+            case "Alphabetical by Title":
+                pos = 0; break;
+            case "Alphabetical by Author":
+                pos = 1; break;
+            case "Alphabetical by Shelf Name":
+                pos = 2; break;
+            default:
+                pos = -1;
+        }
+        return pos;
+    }
+
+    //==================-Functions for Naming Shelves and Storing Names-==================
     private Set<String> getNames() {
         Set<String> names = new HashSet<String>();
         for (int i = 0; i < arrayAdapter.getCount(); i++) {

@@ -77,6 +77,7 @@ public class FragAddBook extends Fragment {
         ArrayAdapter<String> dropDownArrayAdapter = new ArrayAdapter<String>(getContext(),
                 android.R.layout.simple_spinner_dropdown_item, storedNames);
         spinner.setAdapter(dropDownArrayAdapter);
+        spinner.setSelection(storedNames.size()-1);
 
         resetBTN.setOnClickListener(new View.OnClickListener() {
             @Override

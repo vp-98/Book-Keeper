@@ -123,6 +123,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         }
     }
     //==============================================================================================
+
+    //===================================- Recycler View Class -====================================
     /*----------------------------------------------------------------------------------------------
      * RecyclerViewAdapter:
      *  This will take the onClick listener defined in the class that calls this object. The
@@ -130,12 +132,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
      *   adapter. It will copy the list that needs to be used and the click listener.
      */
     public RecyclerViewAdapter(ArrayList<BookModel> books, Context mContext,
-                               onDeleteCallListener deleteCallListener, onEditCallListener editCallListner) {
+                               onDeleteCallListener deleteCallListener,
+                               onEditCallListener editCallListener) {
         this.books = books;
         this.allBooks = new ArrayList<>(books);
         this.mContext = mContext;
         this.deleteCallListener = deleteCallListener;
-        this.editCallListener = editCallListner;
+        this.editCallListener = editCallListener;
         read = notRead = true;
     }
     /*----------------------------------------------------------------------------------------------

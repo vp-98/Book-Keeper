@@ -49,6 +49,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.BlockingDeque;
 
 public class FragSearchBook extends Fragment implements PopupMenu.OnMenuItemClickListener,
         RecyclerViewAdapter.onDeleteCallListener, RecyclerViewAdapter.onEditCallListener {
@@ -258,6 +259,12 @@ public class FragSearchBook extends Fragment implements PopupMenu.OnMenuItemClic
         titleField.setText(book.getTitle());
         authorField.setText(book.getAuthor());
         readSwitch.setChecked(book.getReadStatus());
+        if (storedNames.contains(book.getShelfLocation())) {
+            spinner.setSelection(dropDownArrayAdapter.getPosition(book.getShelfLocation()));
+        } else {
+            spinner.setSelection(storedNames.size()-1);
+        }
+
 
         // Create the popup view
         dialogBuilder.setView(popupView);

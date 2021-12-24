@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -29,89 +30,178 @@
 
     </RelativeLayout>
 
-    <androidx.cardview.widget.CardView
-        android:layout_margin="15dp"
-        android:id="@+id/appstats_topCardView"
+    <ScrollView
+        android:id="@+id/settings_scrollView"
+        android:layout_below="@id/settings_title"
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:cardCornerRadius="10dp"
-        android:layout_below="@id/settings_title">
-
-        <TextView
-            android:id="@+id/settings_manage_shelves_tv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="italic"
-            android:textAlignment="center"
-            android:text="@string/settings_shelf_card"/>
+        android:layout_height="match_parent"
+        android:padding="10dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="350dp"
-            android:layout_marginTop="20dp"
-            android:layout_below="@id/settings_title">
+            android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/settings_shelf_tv"
+            <androidx.cardview.widget.CardView
+                android:layout_margin="15dp"
+                android:id="@+id/appstats_manage_view_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="15dp"
-                android:text="@string/settings_shelf_tv"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                app:cardCornerRadius="10dp">
 
-            <LinearLayout
-                android:id="@+id/shelf_add_ll"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_below="@+id/settings_shelf_tv"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:weightSum="100">
-
-                <EditText
-                    android:id="@+id/settings_shelf_et"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/settings_layout_constraint"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_below="@id/settings_shelf_tv"
-                    android:layout_weight="25"/>
+                    android:layout_height="125dp">
 
-                <Button
-                    android:id="@+id/settings_add_btn"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="75"
-                    android:layout_marginLeft="10dp"
-                    android:backgroundTint="@color/primary"
-                    android:text="@string/settings_submit_btn" />
-            </LinearLayout>
+                    <TextView
+                        android:id="@+id/settings_layout_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/settings_layout_title"
+                        android:textAlignment="center"
+                        android:textSize="20sp"
+                        android:textStyle="italic"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/current_shelves_tv"
+                    <TextView
+                        android:id="@+id/settings_layout_info"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="15dp"
+                        android:text="@string/settings_layout_info"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/settings_layout_title" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/settings_layout_info"
+                        android:weightSum="100"
+                        android:paddingRight="10dp"
+                        android:paddingLeft="10dp">
+
+                        <Spinner
+                            android:id="@+id/settings_layout_spinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="33"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/settings_layout_info" />
+
+                        <Button
+                            android:id="@+id/settings_refresh_btn"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="70"
+                            android:backgroundTint="@color/primary"
+                            android:text="@string/settings_refresh_layout"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/settings_layout_spinner"
+                            app:layout_constraintTop_toTopOf="@+id/settings_layout_spinner" />
+
+
+                    </LinearLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_margin="15dp"
+                android:id="@+id/appstats_manage_shelves_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/shelf_add_ll"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="5dp"
-                android:text="@string/settings_stored_tv"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                app:cardCornerRadius="10dp"
+                android:layout_below="@id/appstats_manage_view_card">
 
-            <ListView
-                android:id="@+id/settings_shelf_names_lv"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@id/current_shelves_tv"
-                android:layout_margin="10dp" />
+                <TextView
+                    android:id="@+id/settings_manage_shelves_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="italic"
+                    android:textAlignment="center"
+                    android:text="@string/settings_shelf_card"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="350dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_below="@id/settings_title">
+
+                    <TextView
+                        android:id="@+id/settings_shelf_tv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="15dp"
+                        android:text="@string/settings_shelf_tv"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:id="@+id/shelf_add_ll"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_below="@+id/settings_shelf_tv"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:weightSum="100">
+
+                        <EditText
+                            android:id="@+id/settings_shelf_et"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_below="@id/settings_shelf_tv"
+                            android:layout_weight="25"/>
+
+                        <Button
+                            android:id="@+id/settings_add_btn"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="75"
+                            android:layout_marginLeft="10dp"
+                            android:backgroundTint="@color/primary"
+                            android:text="@string/settings_submit_btn" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/current_shelves_tv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/shelf_add_ll"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="5dp"
+                        android:text="@string/settings_stored_tv"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <ListView
+                        android:id="@+id/settings_shelf_names_lv"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_below="@id/current_shelves_tv"
+                        android:layout_margin="10dp" />
+
+                </RelativeLayout>
+
+            </androidx.cardview.widget.CardView>
+
 
         </RelativeLayout>
-
-    </androidx.cardview.widget.CardView>
+    </ScrollView>
 
 </RelativeLayout>
