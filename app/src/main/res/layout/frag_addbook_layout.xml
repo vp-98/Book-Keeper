@@ -87,30 +87,40 @@
             android:textColor="@color/text_black"
             app:layout_constraintTop_toBottomOf="@+id/addBook_title_edit_text" />
 
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="30dp"
-            android:text="@string/addbook_spinner_text_view"
-            android:textColor="@color/text_black"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/addBook_author_edit_text" />
+        <LinearLayout
+            android:id="@+id/addBook_shelf_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:orientation="horizontal"
+            android:weightSum="100"
+            app:layout_constraintTop_toBottomOf="@+id/addBook_author_edit_text">
 
-        <Spinner
-            android:id="@+id/addBook_spinner"
-            android:layout_width="150dp"
-            android:layout_height="30dp"
-            android:layout_marginTop="30dp"
-            android:layout_marginRight="45dp"
-            android:spinnerMode="dropdown"
-            android:textAlignment="center"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/textView2"
-            app:layout_constraintTop_toBottomOf="@+id/addBook_author_edit_text" />
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="45"
+                android:text="@string/addbook_spinner_text_view"
+                android:textColor="@color/text_black"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/addBook_author_edit_text" />
+
+            <Spinner
+                android:id="@+id/addBook_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="60"
+                android:spinnerMode="dropdown"
+                android:textAlignment="center"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textView2"
+                app:layout_constraintTop_toBottomOf="@+id/addBook_author_edit_text" />
+
+
+        </LinearLayout>
 
         <Button
             android:id="@+id/addbook_resetBTN"
@@ -137,7 +147,7 @@
             android:textColor="@color/primary_gold"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/addBook_spinner" />
+            app:layout_constraintTop_toBottomOf="@+id/addBook_shelf_info" />
 
         <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/my_switch"
@@ -150,7 +160,7 @@
             android:textSize="16sp"
             android:theme="@style/Switches"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/addBook_spinner"
+            app:layout_constraintTop_toBottomOf="@+id/addBook_shelf_info"
             app:trackTint="@color/primary" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

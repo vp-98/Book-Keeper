@@ -144,7 +144,6 @@ public class FragSearchBook extends Fragment implements PopupMenu.OnMenuItemClic
         });
 
         // Icon for filter listener
-
         filterIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -264,7 +263,6 @@ public class FragSearchBook extends Fragment implements PopupMenu.OnMenuItemClic
         } else {
             spinner.setSelection(storedNames.size()-1);
         }
-
 
         // Create the popup view
         dialogBuilder.setView(popupView);

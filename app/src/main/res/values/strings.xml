@@ -77,13 +77,13 @@
     <string name="appstats_modification_data">Last Update</string>
     <string name="appstats_app_version_number">1.0.1</string>
     <string name="appstats_database_version_number">2</string>
-    <string name="appstats_modification_data_value">24 December 2021</string>
+    <string name="appstats_modification_data_value">25 December 2021</string>
 
     <string name="appstats_changeLog">Change Log and What\'s New</string>
     <string name="change_log">
         - Added feature that allows to store shelf information\n\n
         - Data base accepts shelf information now\n\n
-        - Add book page layout is changed\n\n
+        - \'Add book\' page layout is changed\n\n
         - Fixed transition animations so that they only occur when moving to a different page.\n\n
         - Correct navigation item is selected at start.\n\n
         - Navigation menu does not move up when keyboard is opened!\n\n

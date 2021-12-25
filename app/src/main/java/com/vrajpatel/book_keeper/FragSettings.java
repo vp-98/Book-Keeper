@@ -120,14 +120,12 @@ public class FragSettings extends Fragment {
         shelves.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                String message = "Removed: ";
-                if (adapterView.getItemAtPosition(i).toString() != "Default") {
-                    message += shelfNames.get(i).toString();
+                if (shelfNames.get(i) != "Default") {
+                    Log.d(TAG, "onItemClick-> removing: " + adapterView.getItemAtPosition(i).toString());
                     shelfNames.remove(i);
                     arrayAdapter.notifyDataSetChanged();
                     saveShelfName(null);
-                } else { message = "Cannot remove 'Default' shelf";}
-                Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                } else { Log.e(TAG, "onItemClick -> attempted to remove 'Default'");}
             }
         });
     }
@@ -191,9 +189,7 @@ public class FragSettings extends Fragment {
                 MainActivity.MODE_PRIVATE);
         Set<String> set = sharedPreferences.getStringSet(MainActivity.SET, new HashSet<String>());
         set.remove("");
-        if (!set.contains("Default")) {
-            set.add("Default");
-        }
+        if (!set.contains("Default")) { set.add("Default");}
         return set;
     }
 }
