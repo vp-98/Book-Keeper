@@ -22,6 +22,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -34,7 +35,14 @@ import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationBarView;
 
+import java.util.Set;
+
 public class MainActivity extends AppCompatActivity {
+
+    // Shared Preferences
+    public static final String SHARED_PREFERENCES = "shelves";
+    public static final String SHELVES = "shelf_names";
+    public static final String VIEW = "layout_view";
 
     // Fragment Identifiers
     private final int APP_STATS_FRAGMENT = -2;
@@ -52,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         Log.d(TAG, "onCreate: Main activity created.");
         // Get rid of the status bar and make activity fullscreen
         setContentView(R.layout.activity_main);
@@ -132,7 +141,6 @@ public class MainActivity extends AppCompatActivity {
         if (currentPage > atPage) { transitionRight = true; }
         return transitionRight;
     }
-
 }
 
 

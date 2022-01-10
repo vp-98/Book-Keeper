@@ -27,10 +27,12 @@
     <string name="addbook_author_field">Author</string>
     <string name="addbook_author_hint">Enter Author</string>
     <string name="addbook_reset">Reset</string>
+    <string name="addbook_spinner_text_view">Shelf Location</string>
 
     <!-- Strings For Author and Title usages -->
     <string name="title_field_hint">Title</string>
     <string name="author_field_hint">Author</string>
+    <string name="shelf_field_hint">Location</string>
 
     <!-- Strings For PopupMenu -->
     <string name="pop_is_read_switch_true">Finished Reading</string>
@@ -42,12 +44,26 @@
     <string name="pop_author_hint">Change Author</string>
     <string name="pop_title_hint">Change Title</string>
     <string name="pop_edit_title">Edit A Book</string>
+    <string name="pop_shelf_hint">Shelf:</string>
+    <string name="pop_read_hint">Read Status:</string>
 
     <!-- Strings For bookView Fragment layout and class -->
     <string name="book_view_title_string">My Books</string>
 
     <!-- Strings For bookView Fragment layout and class -->
     <string name="settings_title_string">Settings</string>
+    <string name="settings_shelf_card">Manage Shelves</string>
+    <string name="settings_shelf_tv">Add New Shelf:</string>
+    <string name="settings_submit_btn">Add</string>
+    <string name="settings_stored_tv">Stored Shelves:</string>
+    <string name="settings_layout_title">Manage Layout</string>
+    <string name="settings_layout_info">Change how books are presented on main screen:</string>
+    <string name="settings_refresh_layout">Refresh</string>
+    <string-array name="settings_layout_option">
+        <item>Alphabetical by Title</item>
+        <item>Alphabetical by Author</item>
+        <item>Sort by Shelf</item>
+    </string-array>
 
     <!-- Strings For appStats Fragment layout and class -->
     <string name="appstats_title">App Stats</string>
@@ -61,17 +77,19 @@
     <string name="appstats_app_version">App Version</string>
     <string name="appstats_database_version">Database Version</string>
     <string name="appstats_modification_data">Last Update</string>
-    <string name="appstats_app_version_number">1.0.01</string>
-    <string name="appstats_database_version_number">1</string>
-    <string name="appstats_modification_data_value">8 December 2021</string>
+    <string name="appstats_app_version_number">1.0.1</string>
+    <string name="appstats_database_version_number">2</string>
+    <string name="appstats_modification_data_value">9 January 2022</string>
 
     <string name="appstats_changeLog">Change Log and What\'s New</string>
     <string name="change_log">
-        - Fixed transition animations so that they only occur when moving to a different page.\n\n
-        - Correct navigation item is selected at start.\n\n
+        - New icon for the app!\n\n
+        - Added feature that allows storing shelf information\n\n
+        - Data base accepts shelf information now\n\n
+        - \'Add book\' page layout is changed\n\n
+        - Fixed transition animations so that they occur when moving.\n\n
         - Navigation menu does not move up when keyboard is opened!\n\n
-        - Change status bar color to match the app colors\n\n
-        - Changed the switch activated color to gold to match theme\n\n
+        - User can choose which order books appear in the view\n\n
     </string>
 
 </resources>
