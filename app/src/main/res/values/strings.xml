@@ -44,6 +44,8 @@
     <string name="pop_author_hint">Change Author</string>
     <string name="pop_title_hint">Change Title</string>
     <string name="pop_edit_title">Edit A Book</string>
+    <string name="pop_shelf_hint">Shelf:</string>
+    <string name="pop_read_hint">Read Status:</string>
 
     <!-- Strings For bookView Fragment layout and class -->
     <string name="book_view_title_string">My Books</string>
