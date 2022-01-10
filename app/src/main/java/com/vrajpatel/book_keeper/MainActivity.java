@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
 
     // Shared Preferences
     public static final String SHARED_PREFERENCES = "shelves";
-    public static final String SET = "shelf_name";
+    public static final String SHELVES = "shelf_names";
     public static final String VIEW = "layout_view";
 
     // Fragment Identifiers

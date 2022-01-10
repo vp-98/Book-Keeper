@@ -192,8 +192,7 @@ public class FragBookView extends Fragment implements RecyclerViewAdapter.onDele
         spinner = (Spinner) popupView.findViewById(R.id.popup_spinner);
 
         // Add shelves the spinner
-        ArrayList<String> storedNames = new ArrayList<String>();
-        storedNames.addAll(loadShelfNames());
+        ArrayList<String> storedNames = loadShelfNames();
         ArrayAdapter<String> dropDownArrayAdapter = new ArrayAdapter<String>(getContext(),
                 android.R.layout.simple_spinner_dropdown_item, storedNames);
         spinner.setAdapter(dropDownArrayAdapter);
@@ -204,9 +203,7 @@ public class FragBookView extends Fragment implements RecyclerViewAdapter.onDele
         readSwitch.setChecked(book.getReadStatus());
         if (storedNames.contains(book.getShelfLocation())) {
             spinner.setSelection(dropDownArrayAdapter.getPosition(book.getShelfLocation()));
-        } else {
-            spinner.setSelection(storedNames.size()-1);
-        }
+        } else { spinner.setSelection(0);}
 
         // Create the popup view
         dialogBuilder.setView(popupView);
@@ -251,14 +248,17 @@ public class FragBookView extends Fragment implements RecyclerViewAdapter.onDele
         });
     }
 
-    private Set<String> loadShelfNames() {
+    private ArrayList<String> loadShelfNames() {
         SharedPreferences sharedPreferences = getContext().getSharedPreferences(MainActivity.SHARED_PREFERENCES,
                 MainActivity.MODE_PRIVATE);
-        Set<String> set = sharedPreferences.getStringSet(MainActivity.SET, new HashSet<String>());
-        set.remove("");
-        if (!set.contains("Default")) {
-            set.add("Default");
-        }
-        return set;
+
+        String storedNames = sharedPreferences.getString(MainActivity.SHELVES, "");
+        if (storedNames.length() == 0) { storedNames = "Default";}
+
+        String[] namesArr = storedNames.split("@",-1);
+        ArrayList<String> shelfNames = new ArrayList<String>();
+
+        for (String name : namesArr) { shelfNames.add(name);}
+        return shelfNames;
     }
 }

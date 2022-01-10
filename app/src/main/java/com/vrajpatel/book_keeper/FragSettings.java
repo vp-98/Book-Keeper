@@ -30,11 +30,14 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 public class FragSettings extends Fragment {
@@ -93,8 +96,8 @@ public class FragSettings extends Fragment {
         shelfName = settingsView.findViewById(R.id.settings_shelf_et);
         addShelfBTN = settingsView.findViewById(R.id.settings_add_btn);
         shelves = settingsView.findViewById(R.id.settings_shelf_names_lv);
-        shelfNames = new ArrayList<String>();
-        shelfNames.addAll(loadShelfNames());
+        loadShelfNames();
+
         arrayAdapter = new ArrayAdapter<String>(getContext(),
                 android.R.layout.simple_list_item_1, shelfNames);
         shelves.setAdapter(arrayAdapter);
@@ -106,7 +109,7 @@ public class FragSettings extends Fragment {
                     String newName = shelfName.getText().toString();
                     if (!shelfNames.contains(newName)) {
                         shelfNames.add(shelfName.getText().toString());
-                        saveShelfName(shelfName.getText().toString());
+                        saveShelfName();
                     }
                     shelfName.setText("");
                 } else {
@@ -120,11 +123,12 @@ public class FragSettings extends Fragment {
         shelves.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                if (shelfNames.get(i) != "Default") {
+
+                if (!adapterView.getItemAtPosition(i).toString().equals("Default")) {
                     Log.d(TAG, "onItemClick-> removing: " + adapterView.getItemAtPosition(i).toString());
                     shelfNames.remove(i);
                     arrayAdapter.notifyDataSetChanged();
-                    saveShelfName(null);
+                    saveShelfName();
                 } else { Log.e(TAG, "onItemClick -> attempted to remove 'Default'");}
             }
         });
@@ -174,22 +178,31 @@ public class FragSettings extends Fragment {
         return names;
     }
 
-    private void saveShelfName(String name) {
-        Set<String> names = getNames();
-        if (name != null) {names.add(name);}
+    private void saveShelfName() {
+        StringBuilder newNames = new StringBuilder();
+        for (String name : shelfNames) {
+            newNames.append(name);
+            newNames.append("@");
+        }
+        newNames.deleteCharAt(newNames.length()-1);
+
         SharedPreferences sharedPreferences = getContext().getSharedPreferences(MainActivity.SHARED_PREFERENCES,
                 MainActivity.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putStringSet(MainActivity.SET, names);
+        editor.putString(MainActivity.SHELVES, newNames.toString());
         editor.apply();
     }
 
-    private Set<String> loadShelfNames() {
+    private void loadShelfNames() {
         SharedPreferences sharedPreferences = getContext().getSharedPreferences(MainActivity.SHARED_PREFERENCES,
                 MainActivity.MODE_PRIVATE);
-        Set<String> set = sharedPreferences.getStringSet(MainActivity.SET, new HashSet<String>());
-        set.remove("");
-        if (!set.contains("Default")) { set.add("Default");}
-        return set;
+
+        String storedNames = sharedPreferences.getString(MainActivity.SHELVES, "");
+        if (storedNames.length() == 0) { storedNames = "Default";}
+
+        String[] namesArr = storedNames.split("@",-1);
+        shelfNames = new ArrayList<String>();
+
+        for (String name : namesArr) { shelfNames.add(name);}
     }
 }
