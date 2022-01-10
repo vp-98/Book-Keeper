@@ -40,7 +40,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-public class FragSettings extends Fragment {
+public class FragSettings extends Fragment implements ListViewAdapter.onDeleteIconPressListener {
 
     private static final String TAG = "Settings Fragment";
     // View for this fragment
@@ -55,7 +55,7 @@ public class FragSettings extends Fragment {
     private Button addShelfBTN;
     private ListView shelves;
     private ArrayList<String> shelfNames;
-    private ArrayAdapter<String> arrayAdapter;
+    private ListViewAdapter listViewAdapter;
 
     @Nullable
     @Override
@@ -98,9 +98,9 @@ public class FragSettings extends Fragment {
         shelves = settingsView.findViewById(R.id.settings_shelf_names_lv);
         loadShelfNames();
 
-        arrayAdapter = new ArrayAdapter<String>(getContext(),
-                android.R.layout.simple_list_item_1, shelfNames);
-        shelves.setAdapter(arrayAdapter);
+
+        listViewAdapter = new ListViewAdapter(getContext(), R.layout.listview_single_item, shelfNames, this);
+        shelves.setAdapter(listViewAdapter);
 
         addShelfBTN.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,21 +115,7 @@ public class FragSettings extends Fragment {
                 } else {
                     Toast.makeText(getContext(), "Must add shelf name!", Toast.LENGTH_LONG).show();
                 }
-                arrayAdapter.notifyDataSetChanged();
-            }
-        });
-
-        // remove temporarily
-        shelves.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-                if (!adapterView.getItemAtPosition(i).toString().equals("Default")) {
-                    Log.d(TAG, "onItemClick-> removing: " + adapterView.getItemAtPosition(i).toString());
-                    shelfNames.remove(i);
-                    arrayAdapter.notifyDataSetChanged();
-                    saveShelfName();
-                } else { Log.e(TAG, "onItemClick -> attempted to remove 'Default'");}
+                listViewAdapter.notifyDataSetChanged();
             }
         });
     }
@@ -171,8 +157,8 @@ public class FragSettings extends Fragment {
     //==================-Functions for Naming Shelves and Storing Names-==================
     private Set<String> getNames() {
         Set<String> names = new HashSet<String>();
-        for (int i = 0; i < arrayAdapter.getCount(); i++) {
-            names.add(arrayAdapter.getItem(i).toString());
+        for (int i = 0; i < listViewAdapter.getCount(); i++) {
+            names.add(listViewAdapter.getItem(i).toString());
         }
         names.add(shelfName.getText().toString());
         return names;
@@ -204,5 +190,15 @@ public class FragSettings extends Fragment {
         shelfNames = new ArrayList<String>();
 
         for (String name : namesArr) { shelfNames.add(name);}
+    }
+
+    @Override
+    public void deleteItem(int position) {
+        String message = "Removed: " + shelfNames.get(position).toString();
+        Log.d(TAG, "onItemClick-> removing: " + shelfNames.get(position).toString());
+        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+        shelfNames.remove(position);
+        listViewAdapter.notifyDataSetChanged();
+        saveShelfName();
     }
 }

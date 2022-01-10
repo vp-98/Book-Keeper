@@ -3,18 +3,15 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/App Development/BookKeeperV2/app/src/main/res/drawable/context_delete.xml" value="1.053864168618267" />
+        <entry key="..\:/App Development/BookKeeperV2/app/src/main/res/drawable/nav_search_icon.xml" value="1.053864168618267" />
         <entry key="..\:/App Development/BookKeeperV2/app/src/main/res/layout/activity_main.xml" value="1.063231850117096" />
         <entry key="..\:/App Development/BookKeeperV2/app/src/main/res/layout/frag_addbook_layout.xml" value="1.063231850117096" />
+        <entry key="..\:/App Development/BookKeeperV2/app/src/main/res/layout/listview_single_item.xml" value="1.0175644028103044" />
         <entry key="..\:/App Development/BookKeeperV2/app/src/main/res/layout/popup_editbook_layout.xml" value="0.7081497797356828" />
+        <entry key="..\:/App Development/BookKeeperV2/app/src/main/res/layout/recycler_single_item.xml" value="1.0175644028103044" />
         <entry key="..\:/App Development/BookKeeperV2/app/src/main/res/menu/filter_menu.xml" value="1.063231850117096" />
         <entry key="..\:/App Development/BookKeeperV2/app/src/main/res/menu/item_context_menu.xml" value="1.063231850117096" />
-        <entry key="..\:/Users/vrajp/CLASS/App Development/Book-Keeper/app/src/main/res/layout/frag_addbook_layout.xml" value="0.25" />
-        <entry key="..\:/Users/vrajp/CLASS/App Development/Book-Keeper/app/src/main/res/layout/frag_appstats_layout.xml" value="0.209375" />
-        <entry key="..\:/Users/vrajp/CLASS/App Development/Book-Keeper/app/src/main/res/layout/frag_bookview_layout.xml" value="0.209375" />
-        <entry key="..\:/Users/vrajp/CLASS/App Development/Book-Keeper/app/src/main/res/layout/frag_search_layout.xml" value="0.209375" />
-        <entry key="..\:/Users/vrajp/CLASS/App Development/Book-Keeper/app/src/main/res/layout/frag_settings_layout.xml" value="0.209375" />
-        <entry key="..\:/Users/vrajp/CLASS/App Development/Book-Keeper/app/src/main/res/layout/popup_editbook_layout.xml" value="0.25" />
-        <entry key="..\:/Users/vrajp/CLASS/App Development/Book-Keeper/app/src/main/res/layout/recycler_single_item.xml" value="0.33" />
       </map>
     </option>
   </component>
