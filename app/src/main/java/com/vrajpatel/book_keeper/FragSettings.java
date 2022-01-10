@@ -87,6 +87,7 @@ public class FragSettings extends Fragment implements ListViewAdapter.onDeleteIc
                 String selected = "Saved: ";
                 selected += layoutChoiceSpinner.getSelectedItem().toString();
                 Log.d(TAG, "onClick: " + selected);
+                Toast.makeText(getContext(), "Layout Refreshed!", Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -146,7 +147,7 @@ public class FragSettings extends Fragment implements ListViewAdapter.onDeleteIc
                 pos = 0; break;
             case "Alphabetical by Author":
                 pos = 1; break;
-            case "Alphabetical by Shelf Name":
+            case "Sort by Shelf":
                 pos = 2; break;
             default:
                 pos = -1;

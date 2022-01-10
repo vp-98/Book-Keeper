@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         Log.d(TAG, "onCreate: Main activity created.");
         // Get rid of the status bar and make activity fullscreen
         setContentView(R.layout.activity_main);

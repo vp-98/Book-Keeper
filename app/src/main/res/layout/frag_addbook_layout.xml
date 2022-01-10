@@ -119,7 +119,6 @@
                 app:layout_constraintStart_toEndOf="@+id/textView2"
                 app:layout_constraintTop_toBottomOf="@+id/addBook_author_edit_text" />
 
-
         </LinearLayout>
 
         <Button
