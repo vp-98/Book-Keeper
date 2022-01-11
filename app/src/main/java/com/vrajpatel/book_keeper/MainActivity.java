@@ -22,20 +22,11 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.GestureDetector;
 import android.view.MenuItem;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.WindowManager;
-import android.widget.FrameLayout;
-import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationBarView;
-
-import java.util.Set;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -55,8 +46,13 @@ public class MainActivity extends AppCompatActivity {
     private NavigationBarView bottomNav;
     private int currentPage;
 
-    // ------------------------------------------------------------------------------
-
+    //==============================================================================================
+    /**
+     * onCreate: (overridden method)
+     *  Creates the view of the fragment and binds all the components in the fragment for further
+     *   use. Sets up the bottom navigation and prepares the fragments when navigating.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // Attach the bottom navigation here and listener here
-        bottomNav =findViewById(R.id.bottom_navigation);
+        bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnItemSelectedListener(navListener);
 
         // Set default start page to be the book view page
@@ -77,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
     //==============================================================================================
+
     /**
      * navListener
      *  This is the onclick listener used for the bottom navigation menu. The selected fragment
@@ -125,16 +122,16 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 }
             };
-
     //==============================================================================================
+
     /**
      * determineTransitionAnimation
      *   This function is used to determine which directions to set the animations. Using the
-     *    int values that represent pages, the proper transiton is choosen. True indicates right,
+     *    int values that represent pages, the proper transition is chosen. True indicates right,
      *    false indicates left.
      *
-     * @param atPage  the current page/fragment that the user is on
-     * @return        true or false
+     * @param atPage    the current page/fragment that the user is on
+     * @return boolean  true if navigating right, else false
      */
     private boolean determineTransitionAnimation(int atPage) {
         boolean transitionRight = false;
@@ -142,5 +139,3 @@ public class MainActivity extends AppCompatActivity {
         return transitionRight;
     }
 }
-
-

@@ -7,6 +7,10 @@
         <entry key="..\:/App Development/BookKeeperV2/app/src/main/res/drawable/nav_search_icon.xml" value="1.053864168618267" />
         <entry key="..\:/App Development/BookKeeperV2/app/src/main/res/layout/activity_main.xml" value="1.063231850117096" />
         <entry key="..\:/App Development/BookKeeperV2/app/src/main/res/layout/frag_addbook_layout.xml" value="0.9149797570850202" />
+        <entry key="..\:/App Development/BookKeeperV2/app/src/main/res/layout/frag_appstats_layout.xml" value="0.949648711943794" />
+        <entry key="..\:/App Development/BookKeeperV2/app/src/main/res/layout/frag_bookview_layout.xml" value="0.949648711943794" />
+        <entry key="..\:/App Development/BookKeeperV2/app/src/main/res/layout/frag_search_layout.xml" value="0.949648711943794" />
+        <entry key="..\:/App Development/BookKeeperV2/app/src/main/res/layout/frag_settings_layout.xml" value="0.8069651741293532" />
         <entry key="..\:/App Development/BookKeeperV2/app/src/main/res/layout/listview_single_item.xml" value="1.0175644028103044" />
         <entry key="..\:/App Development/BookKeeperV2/app/src/main/res/layout/popup_editbook_layout.xml" value="0.7081497797356828" />
         <entry key="..\:/App Development/BookKeeperV2/app/src/main/res/layout/recycler_single_item.xml" value="1.0175644028103044" />

@@ -25,10 +25,10 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import org.w3c.dom.Text;
 
 public class FragAppStats extends Fragment {
 
+    // Public class to hold statistics of stored books
     public static class BookListInformation {
         private int bookCount;
         private int notReadCount;
@@ -58,6 +58,16 @@ public class FragAppStats extends Fragment {
     private TextView readCountField;
     private TextView notReadCountField;
 
+    //==============================================================================================
+    /**
+     * onCreateView:
+     *  Creates the view of the fragment and binds all the components in the fragment for further
+     *   use.
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return View of the fragment
+     */
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {

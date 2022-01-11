@@ -40,7 +40,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <!-- Book Stats view, Changes must be made in the class -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/appstats_topCardView"
                 android:layout_width="match_parent"
@@ -143,7 +142,6 @@
 
             </androidx.cardview.widget.CardView>
 
-            <!-- General Stats view, NO CHANGES HERE, CHANGES MUST BE IN R.STRINGS-->
             <androidx.cardview.widget.CardView
                 android:id="@+id/appstats_general_cardview"
                 android:layout_width="match_parent"
@@ -167,7 +165,6 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
-
 
                     <TextView
                         android:id="@+id/appstats_db_version_number"
@@ -241,7 +238,6 @@
 
             </androidx.cardview.widget.CardView>
 
-            <!-- Change Log -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

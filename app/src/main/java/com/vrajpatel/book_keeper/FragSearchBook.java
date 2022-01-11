@@ -35,7 +35,6 @@ import android.widget.ImageView;
 import android.widget.PopupMenu;
 
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -47,12 +46,18 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.concurrent.BlockingDeque;
 
 public class FragSearchBook extends Fragment implements PopupMenu.OnMenuItemClickListener,
         RecyclerViewAdapter.onDeleteCallListener, RecyclerViewAdapter.onEditCallListener {
+
+    // To create the popup menu---------------------
+    private AlertDialog.Builder dialogBuilder;
+    private AlertDialog dialog;
+    private Button cancelBTN, updateBTN;
+    private SwitchCompat readSwitch;
+    private EditText titleField, authorField;
+    private Spinner spinner;
+    //----------------------------------------------
 
     private static final String TAG = "FragSearchBook";
     private RecyclerView recyclerView;
@@ -73,18 +78,20 @@ public class FragSearchBook extends Fragment implements PopupMenu.OnMenuItemClic
     private RecyclerViewAdapter.onDeleteCallListener myDeleteListener;
     private RecyclerViewAdapter.onEditCallListener myEditListener;
 
-    // To create the popup menu---------------------
-    private AlertDialog.Builder dialogBuilder;
-    private AlertDialog dialog;
-    private Button cancelBTN, updateBTN;
-    private SwitchCompat readSwitch;
-    private EditText titleField, authorField;
-    private Spinner spinner;
-    //----------------------------------------------
-
+    //==============================================================================================
+    /**
+     * onCreateView: (overridden method)
+     *  Creates the view of the fragment and binds all the components in the fragment for further
+     *   use.
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return View of the fragment
+     */
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+                             Bundle savedInstanceState) {
 
         // generate view and attach all private members
         View view = inflater.inflate(R.layout.frag_search_layout, container, false);
@@ -108,8 +115,16 @@ public class FragSearchBook extends Fragment implements PopupMenu.OnMenuItemClic
 
         return view;
     }
-
     //==============================================================================================
+
+    /**
+     * onViewCreated: (overridden method)
+     *  Sets up the fragment and initializes the page for searching. Initializes components of
+     *   the fragment and sets up a recycler view with a custom adapter. Filters recycler view
+     *   depending on the user's search.
+     * @param view
+     * @param savedInstanceState
+     */
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.d(TAG, "onViewCreated: FirstFragment has started");
@@ -152,11 +167,14 @@ public class FragSearchBook extends Fragment implements PopupMenu.OnMenuItemClic
             }
         });
     }
-    //=======================================-MENU FUNCTIONS-=======================================
     //==============================================================================================
-    /*
+
+    /**
      * onCreateContextMenu:
-     *  Generates an option menu for each item present in the list view.
+     *  Generates an option menu for each item present in the recycler view.
+     * @param menu
+     * @param v
+     * @param menuInfo
      */
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
@@ -165,10 +183,12 @@ public class FragSearchBook extends Fragment implements PopupMenu.OnMenuItemClic
         inflater.inflate(R.menu.item_context_menu, menu);
     }
     //==============================================================================================
-    /*
+
+    /**
      * showFilterMenu:
-     *   This function will create the filter menu that pops up for the filter options.
-     *    It will set the checkable items in the menu to the current status of the user's choice.
+     *  Creates the filter menu that pops up for the filter options and accepts the user's selected
+     *   filter options.
+     * @param view
      */
     private void showFilterMenu(View view) {
         popupMenu = new PopupMenu(view.getContext(), view);
@@ -180,11 +200,13 @@ public class FragSearchBook extends Fragment implements PopupMenu.OnMenuItemClic
         popupMenu.show();
     }
     //==============================================================================================
-    /*
-     * onMenuClick:
-     *   This function will register menu clicks on the filter menu that is opened. The menu
-     *    will remain open until the user clicks outside of the menu. The options selected will
-     *    Be stored in this class.
+
+    /**
+     * onMenuClick: (overridden method)
+     *  Registers the menu clicks from the filter menu. The selected options from the menu will are
+     *   then used to filter the results.
+     * @param item
+     * @return
      */
     @Override
     public boolean onMenuItemClick(MenuItem item) {
@@ -214,9 +236,15 @@ public class FragSearchBook extends Fragment implements PopupMenu.OnMenuItemClic
         });
         return false;
     }
+    //==============================================================================================
+
+    /**
+     * deleteItem: (overridden method)
+     *  Deletes the item that is selected on the recycler view.
+     * @param position
+     */
     @Override
     public void deleteItem(int position) {
-        Toast.makeText(getContext(), "Clicked on: " + allBooks.get(position).getTitle(), Toast.LENGTH_SHORT).show();
         if (mDatabaseHelper.deleteBookWithID(allBooks.get(position))) {
             allBooks.remove(position);
             adapter.notifyDataSetChanged();
@@ -224,15 +252,23 @@ public class FragSearchBook extends Fragment implements PopupMenu.OnMenuItemClic
             Log.e(TAG, "deleteItem: Book Could not be removed");
         }
     }
+    //==============================================================================================
+
+    /**
+     * openEditFragment: (overridden method)
+     *  Generates a popup dialog with fields pre-filled with the selected book's information.
+     * @param position
+     */
     @Override
     public void openEditFragment(int position) {
         generatePopup(allBooks.get(position));
     }
     //==============================================================================================
-    /*
+
+    /**
      * generatePopup:
-     *  This function will create a small popup window to the screen. This will allow the user to
-     *   edit a selected book.
+     *  Creates a small popup dialog/window allowing the user to edit any of the book's fields.
+     * @param book
      */
     public void generatePopup(BookModel book) {
         Log.d(TAG, "generatePopup: Generating A new Popup Option");
@@ -304,6 +340,13 @@ public class FragSearchBook extends Fragment implements PopupMenu.OnMenuItemClic
             }
         });
     }
+    //==============================================================================================
+
+    /**
+     * loadShelfNames:
+     *  Extracts the saved shelf names that the user has defined from the shared-preferences.
+     * @return Arraylist of shelf names
+     */
     private ArrayList<String> loadShelfNames() {
         SharedPreferences sharedPreferences = getContext().getSharedPreferences(MainActivity.SHARED_PREFERENCES,
                 MainActivity.MODE_PRIVATE);
@@ -317,5 +360,4 @@ public class FragSearchBook extends Fragment implements PopupMenu.OnMenuItemClic
         for (String name : namesArr) { shelfNames.add(name);}
         return shelfNames;
     }
-
 }

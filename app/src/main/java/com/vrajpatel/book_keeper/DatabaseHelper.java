@@ -43,9 +43,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COL_IS_READ = "is_read";
 
     //==============================================================================================
-    /*
+    /**
+     * DatabaseHelper (constructor):
      * Before pushing update to the phone, make sure that the database version matches that of
      *   the actual user's phone, otherwise make sure to switch back to the correct one for testing.
+     * @param context
      */
     public DatabaseHelper(Context context) {
         super(context, TABLE_NAME, null,2);
@@ -53,6 +55,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Log.d(TAG, "DatabaseHelper: Database version mobile device: " + DATABASE_VERSION_ON_MOBILE_DEVICE);
     }
     //==============================================================================================
+
+    /**
+     * onCreate: (overridden method)
+     * Creates a new data table if needed with the columns stated.
+     * @param sqLiteDatabase
+     */
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         Log.d(TAG, "onCreate: Creating Database " + TABLE_NAME);
@@ -63,6 +71,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(createTable);
     }
     //==============================================================================================
+
+    /**
+     * onUpgrade: (overridden method)
+     *  Upgrades data table when a new version is detected.
+     * @param sqLiteDatabase
+     * @param oldVersion
+     * @param newVersion
+     */
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
         if (oldVersion < newVersion) {
@@ -75,11 +91,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
     //==============================================================================================
-    /*
+
+    /**
      * itemPresent:
-     *  Checks to see if the item is already present in the database in the given column.
-     * @param: String item name, String column name
-     * @post-condition: Returns true if matching item was located in the given column.
+     *   Checks to see if the item is already present in the database in the given column.
+     * @param titleLowerCase         Title that is about to be added
+     * @param author                 Author that is about to be added
+     * @return boolean               True if book present, false otherwise
      */
     private boolean itemPresent(String titleLowerCase, String author) {
         Log.d(TAG, "itemPresent: Checking to see if: " + titleLowerCase + " exists in col: " + COL_TITLE_LOWERCASE);
@@ -93,15 +111,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return (count > 0);
     }
     //==============================================================================================
-    /*
+
+    /**
      * addData:
-     *  taking the provided item, add it to the database if it does not exist.
-     * @param: item to be added into database
-     * @post-condition: returns 0 if item not added, returns 1 if added, returns 2
-     *    if already present
+     *  Taking the provided item, add it to the database if it does not exist.
+     * @param title
+     * @param author
+     * @param titleLowerCase
+     * @param readStatus
+     * @param shelfLocation
+     * @return boolean         True if book was saved, else false
      */
     public boolean addData(String title, String author, String titleLowerCase, boolean readStatus,
-        String shelfLocation) {
+                           String shelfLocation) {
         Log.d(TAG, "addData: Adding a new Book to the database");
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -123,11 +145,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return false;
     }
     //==============================================================================================
-    /*
+
+    /**
      * deleteBookWithID:
      *  Removes the book using the provided book. The ID is extracted from the Book class directly.
-     * @param: Book
-     * @post-condition: removes the book from the DB
+     * @param book
+     * @return boolean    True by default
      */
     public boolean deleteBookWithID(BookModel book) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -137,13 +160,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return true;
     }
     //==============================================================================================
-    /*
+
+    /**
      * getStoredBooks:
-     *  Converts the contents of the database into an arraylist used to populate
-     *   a listview in the calling activity. Returns the contents in alphabetical
-     *   order.
-     * @param: none
-     * @post-condition: Creates a list of books from the db
+     *   Converts the contents of the database into an arraylist. Contents are
+     *   sorted alphabetically.
+     * @return ArrayList of stored books
      */
     public ArrayList<BookModel> getStoredBooks() {
         ArrayList<BookModel> books = new ArrayList<>();
@@ -176,13 +198,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return books;
     }
     //==============================================================================================
-    /*
+
+    /**
      * generateStatsReport:
-     *  Converts the contents of the database into an arraylist used to populate
-     *   a listview in the calling activity. Returns the contents in alphabetical
-     *   order. The contents
-     * @param: none
-     * @post-condition: Creates a list of books from the db
+     *  Obtains the statistics of stored books.
+     * @return FragAppStats.BookListInformation holding the stats
      */
     public FragAppStats.BookListInformation generateStatsReport() {
 
@@ -217,11 +237,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 notReadCount, readCount);
     }
     //==============================================================================================
-    /*
+
+    /**
      * updateCol:
-     *  Updates the provided book with the new values. ID is pulled from the book class directly.
-     * @param: Book
-     * @post-condition: Updates the book with new information
+     *  Updates the columns for a book that was edited.
+     * @param book   Book with edited information.
      */
     public void updateCol(BookModel book) {
 
@@ -236,44 +256,5 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         db.update(TABLE_NAME, cv, "ID = ?", new String[]{Integer.toString(id)});
         db.close();
-    }
-    //======================================-UNUSED FUNCTIONS-======================================
-    /*  !*!*!*!*! UNUSED FUNCTION !*!*!*!*!
-     * getItemId:
-     *  Gets the ID of the provided item. Returns the cursor holding the row information.
-     * @param: String
-     * @post-condition: Provides ID for the String from the db
-     */
-    public Cursor getItemID(String name) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        String query = "SELECT " + COL_ID + " FROM " + TABLE_NAME +
-                " WHERE " + COL_TITLE + " = '" + name + "'";
-        Log.d(TAG, "getItemID: query: " + query);
-        return db.rawQuery(query, null);
-    }
-    /*  !*!*!*!*! UNUSED FUNCTION !*!*!*!*!
-     * deleteBookFromTitle:
-     *  Removes the book if it exists in the database. Requires only the title
-     */
-    public void deleteBookFromTitle(String title) {
-        // Get app id
-        Cursor data = getItemID(title);
-        int id = -1;
-        while (data.moveToNext()) {
-            id = data.getInt(0);
-        }
-        // Update the table here if the item was located
-        if (id > -1) {
-            SQLiteDatabase db = this.getWritableDatabase();
-            String query = "DELETE FROM " + TABLE_NAME + " WHERE " +
-                    COL_ID + " = '" + id + "' AND " + COL_TITLE + " ='" + title + "'";
-
-            Log.d(TAG, "deleteApp: query: " + query);
-            Log.d(TAG, "deleteApp: Deleting: " + title + " from database");
-            db.execSQL(query);
-        } else {
-            Log.e(TAG, "onItemClick: THE ID WAS NOT ABLE TO BE FOUND");
-        }
-        data.close();
     }
 }

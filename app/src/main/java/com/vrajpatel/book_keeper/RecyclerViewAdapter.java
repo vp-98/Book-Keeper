@@ -33,7 +33,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,7 +51,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private boolean notRead;
 
     //====================================- View Holder Class -=====================================
-    class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, PopupMenu.OnMenuItemClickListener {
+    class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener,
+            PopupMenu.OnMenuItemClickListener {
 
         private static final String TAG = "MyViewHolder";
         TextView tvTitleField;         // Item in layout to fill title
@@ -62,10 +62,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         ImageView readIcon;            // Item in layout to set check mark
         onDeleteCallListener deleteCallListener2;
 
-        /*-----------------------------------------------------------------------------------
+        //==========================================================================================
+        /**
          * MyViewHolder:
          *  This will attach the textViews from the layout to the holder class. It will also
          *   add a onClick listener for each item and buttonImage click for each item.
+         * @param itemView
          */
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -76,22 +78,26 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             readIcon = itemView.findViewById(R.id.recycler_view_checkIcon);
             moreOptions.setOnClickListener(this);
         }
+        //==========================================================================================
 
-        /*-----------------------------------------------------------------------------------
-         * onClick: (For each item in the recycler view)
-         *  This will call the onNoteClick function when a click is registered. It will send
-         *   the position of the clicked item to the function allowing for things to happend
-         *   when a certain item is clicked.
+        /**
+         * onCLick: (overridden method)
+         *  Calls the onNoteClick function when a click is registered on the item. Requires Android
+         *   10.
+         * @param v
          */
         @Override
         @RequiresApi(api = Build.VERSION_CODES.Q)
         public void onClick(View v) {
             showContextMenu(v);
         }
+        //==========================================================================================
 
-        /*-----------------------------------------------------------------------------------
-         * showContextMenu:
-         *  this will allow the menu to be created for each item that is in the list.
+        /**
+         * showContextMenu: (overridden method)
+         *  Creates and shows the menu for each item that is present in the recycler view. Requires
+         *   Android 10.
+         * @param view
          */
         @RequiresApi(api = Build.VERSION_CODES.Q)
         private void showContextMenu(View view) {
@@ -101,11 +107,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             popupMenu.setForceShowIcon(true);
             popupMenu.show();
         }
-        /*-----------------------------------------------------------------------------------
-         * onMenuItemClick:
-         *  this will register the clicks to certain menu items and perform those tasks.
-         *   Upon the delete request, the interface below must be fulfilled inorder to allow
-         *   that deletion to happen from the calling Fragment.
+        //==========================================================================================
+
+        /**
+         * onMenuItemClick: (overridden method)
+         *  Registers the clicks to certain menu items and performs the respective tasks.
+         * @param item
+         * @return
          */
         @Override
         public boolean onMenuItemClick(MenuItem item) {
@@ -125,11 +133,15 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     //==============================================================================================
 
     //===================================- Recycler View Class -====================================
-    /*----------------------------------------------------------------------------------------------
+
+    /**
      * RecyclerViewAdapter:
-     *  This will take the onClick listener defined in the class that calls this object. The
-     *   interface is provided below and should be implemented in the class that wishes to use the
-     *   adapter. It will copy the list that needs to be used and the click listener.
+     *  Constructs custom adapter with all the a list of books, context, and onClickListeners for
+     *   certain tasks.
+     * @param books
+     * @param mContext
+     * @param deleteCallListener
+     * @param editCallListener
      */
     public RecyclerViewAdapter(ArrayList<BookModel> books, Context mContext,
                                onDeleteCallListener deleteCallListener,
@@ -141,11 +153,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         this.editCallListener = editCallListener;
         read = notRead = true;
     }
-    /*----------------------------------------------------------------------------------------------
-     * onCreateViewHolder:
-     *  This will create the view and take in the single row layout that will be used
-     *   to populate the recycler view. It will also provide the onClick listener for
-     *   the items present on the view.
+    //==============================================================================================
+
+    /**
+     * onCreateViewHolder: (overridden method)
+     *  Creates the view and takes in a single row layout that will be used for the recycler view.
+     * @param parent
+     * @param viewType
+     * @return
      */
     @NonNull
     @Override
@@ -154,10 +169,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 parent, false);
         return new MyViewHolder(view);
     }
-    /*----------------------------------------------------------------------------------------------
-     * onBindViewHolder:
-     *  This will attach the content to the actual view using the provided ViewHolder.
-     *   Sets the title and author fields using the arraylist of books.
+    //==============================================================================================
+
+    /**
+     * onBindViewHolder: (overridden method)
+     *  Attaches the content to the view using the ViewHolder class. Sets all respective fields in
+     *   the layout file with the information from the list of books.
+     * @param holder
+     * @param position
      */
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
@@ -171,42 +190,52 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             holder.readIcon.setImageResource(R.drawable.shape_empty_box);
         }
     }
-    /*----------------------------------------------------------------------------------------------
-     * getItemCount:
-     *  This will return the number of recycler view items that need to be displayed.
-     *   Must return the number of items otherwise it will only print a select few onto
-     *   the screen.
+    //==============================================================================================
+
+    /**
+     * getItemCount: (overridden method)
+     *  This will return the number of items stored in the list that will be displayed in the
+     *   recycler view.
+     * @return
      */
     @Override
     public int getItemCount() {
         return books.size();
     }
     //==============================================================================================
-    /*-----------------------------------------------------------------------------------
+
+    /**
      * provideFilters:
-     *  This will reset/update the filter requirements that are sent in by the search.
-     *   The currStr is used to keep the current search item present in the view.
+     *  This will reset/update the filter requirements that are sent in by the search fragment.
+     * @param read     boolean option reflecting user choice
+     * @param notRead  boolean option reflecting user choice
+     * @param currStr  current search item in the view.
      */
     public void provideFilters(boolean read, boolean notRead, String currStr) {
         this.read = read;
         this.notRead = notRead;
         getFilter().filter(currStr);
     }
+    //==============================================================================================
+
     //======================================-Filter Requests-=======================================
-    /*-----------------------------------------------------------------------------------
+
+    /**
      * getFilter:
-     *  This will create the initial filter requests. These filters occur on the back
-     *   thread preventing the app from slowing down or lagging.
+     *  Create the initial filter request. Filtering will occur on the back thread to prevent
+     *   the app from slowing down when filtering large quantities.
+     * @return
      */
     @Override
     public Filter getFilter() {
         return searchFilter;
     }
-    /*-----------------------------------------------------------------------------------
+    //==============================================================================================
+
+    /**
      * searchFilter:
-     *  This is where the filter is performed and provided back to the UI fragment. This
-     *   will take the constraint provided from the search result and narrow down
-     *   the items present in allBooks list and apply the read/notRead filters.
+     *  Performs the filtering and provides feedback to the UI fragment (search fragment) after
+     *   providing any user provided search constraints.
      */
     private Filter searchFilter = new Filter() {
         // Executing on the background thread
@@ -234,10 +263,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         }
     };
     //==============================================================================================
-    /*-----------------------------------------------------------------------------------
+
+    /**
      * generateSearchResults:
-     *  Helper function will narrow down the search results and apply the filters to
-     *   them here. A list with the matching results will be provided back to the UI.
+     *  Helper function that narrows down the search results and applies any filter constraints.
+     * @param query
+     * @return Arraylist of filtered books
      */
     private ArrayList<BookModel> generateSearchResults(String query) {
         ArrayList<BookModel> searchFinds = new ArrayList<>();
@@ -255,6 +286,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         }
         return searchFinds;
     }
+    //==============================================================================================
+
     /*-----------------------------------------------------------------------------------
      * onDeleteCallListener: (interface)
      *  Must be implemented in the Fragments/Activities that use this custom adapter.

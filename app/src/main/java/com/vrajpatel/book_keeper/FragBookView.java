@@ -20,23 +20,16 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.Switch;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -47,23 +40,12 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 public class FragBookView extends Fragment implements RecyclerViewAdapter.onDeleteCallListener, RecyclerViewAdapter.onEditCallListener {
-
-    private static final String TAG = "BookListFragment";
-    private RecyclerView recyclerView;
-    private ArrayList<BookModel> books;
-    private RecyclerViewAdapter adapter;
-    private DatabaseHelper mDatabaseHelper;
-    private Context mContext;
 
     // To create the popup menu---------------------
     private AlertDialog.Builder dialogBuilder;
@@ -74,6 +56,23 @@ public class FragBookView extends Fragment implements RecyclerViewAdapter.onDele
     private Spinner spinner;
     //----------------------------------------------
 
+    private static final String TAG = "BookListFragment";
+    private RecyclerView recyclerView;
+    private ArrayList<BookModel> books;
+    private RecyclerViewAdapter adapter;
+    private DatabaseHelper mDatabaseHelper;
+    private Context mContext;
+
+    //==============================================================================================
+    /**
+     * onCreateView:
+     *  Creates the view of the fragment and binds all the components in the fragment for further
+     *   use.
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return View of the fragment
+     */
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -84,8 +83,15 @@ public class FragBookView extends Fragment implements RecyclerViewAdapter.onDele
         mContext = getContext();
         return view;
     }
-
     //==============================================================================================
+
+    /**
+     *  onViewCreated:
+     *   Sets up the fragment and initializes the page. Sorts the contents of the page depending
+     *    on user's preference and sets up a custom recycler adapter. Requires Android 7.0.
+     * @param view
+     * @param savedInstanceState
+     */
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -102,7 +108,12 @@ public class FragBookView extends Fragment implements RecyclerViewAdapter.onDele
         recyclerView.setAdapter(adapter);
         registerForContextMenu(recyclerView);
     }
-    
+    //==============================================================================================
+
+    /**
+     *  compareBooksByAuthor:
+     *   Sorts the books by author's name. Requires Android 7.0.
+     */
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void compareBooksByAuthor() {
         Log.d(TAG, "compareBooksByAuthor: Layout by author name");
@@ -111,7 +122,12 @@ public class FragBookView extends Fragment implements RecyclerViewAdapter.onDele
         books.clear();
         books.addAll(sortedAuthor);
     }
+    //==============================================================================================
 
+    /**
+     * compareBooksByShelfName:
+     *  Sorts the books by the shelf's name. Requires Android 7.0.
+     */
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void compareBooksByShelfName() {
         Log.d(TAG, "compareBooksByShelfName: Layout by shelf name");
@@ -120,7 +136,12 @@ public class FragBookView extends Fragment implements RecyclerViewAdapter.onDele
         books.clear();
         books.addAll(sortedAuthor);
     }
-    
+    //==============================================================================================
+
+    /**
+     * processBooks:
+     *  Determines the sort order depending on the user's preference. Requires Android 7.0.
+     */
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void processBooks() {
         int layout = loadViewChoice();
@@ -133,7 +154,13 @@ public class FragBookView extends Fragment implements RecyclerViewAdapter.onDele
                 break;
         }
     }
-    
+    //==============================================================================================
+
+    /**
+     * loadViewChoice:
+     *  Extracts the user's preference of sort order from the shared-preferences.
+     * @return int  representing the sort order.
+     */
     private int loadViewChoice() {
         SharedPreferences sharedPreferences = getContext().getSharedPreferences(MainActivity.SHARED_PREFERENCES,
                 MainActivity.MODE_PRIVATE);
@@ -146,9 +173,13 @@ public class FragBookView extends Fragment implements RecyclerViewAdapter.onDele
     }
 
     //==============================================================================================
-    /*
-     * onCreateContextMenu:
-     *  Generates an option menu for each item present in the list view.
+
+    /**
+     * onCreateContextMenu: (overridden method)
+     *  Generates an option menu for each of the items in the recycler view.
+     * @param menu
+     * @param v
+     * @param menuInfo
      */
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
@@ -156,7 +187,13 @@ public class FragBookView extends Fragment implements RecyclerViewAdapter.onDele
         MenuInflater inflater = getActivity().getMenuInflater();
         inflater.inflate(R.menu.item_context_menu, menu);
     }
+    //==============================================================================================
 
+    /**
+     * deleteItem: (overridden method)
+     *  Deletes the item that is selected on the recycler view.
+     * @param position
+     */
     @Override
     public void deleteItem(int position) {
         if (mDatabaseHelper.deleteBookWithID(books.get(position))) {
@@ -167,16 +204,23 @@ public class FragBookView extends Fragment implements RecyclerViewAdapter.onDele
             Log.e(TAG, "deleteItem: Book Could not be removed");
         }
     }
+    //==============================================================================================
 
+    /**
+     * openEditFragment: (overridden method)
+     *  Generates a popup dialog with fields pre-filled with the selected book's information.
+     * @param position
+     */
     @Override
     public void openEditFragment(int position) {
         generatePopup(books.get(position));
     }
     //==============================================================================================
-    /*
-     * generatePopup:
-     *  This function will create a small popup window to the screen. This will allow the user to
-     *   edit a selected book.
+
+    /**
+     * genereatePopup:
+     *  Creates a small popup dialog/window allowing the user to edit any of the book's fields.
+     * @param book
      */
     public void generatePopup(BookModel book) {
         Log.d(TAG, "generatePopup: Generating A new Popup Option");
@@ -247,7 +291,13 @@ public class FragBookView extends Fragment implements RecyclerViewAdapter.onDele
             }
         });
     }
+    //==============================================================================================
 
+    /**
+     * loadShelfNames:
+     *  Extracts the saved shelf names that the user has defined from the shared-preferences.
+     * @return Arraylist of shelf names
+     */
     private ArrayList<String> loadShelfNames() {
         SharedPreferences sharedPreferences = getContext().getSharedPreferences(MainActivity.SHARED_PREFERENCES,
                 MainActivity.MODE_PRIVATE);

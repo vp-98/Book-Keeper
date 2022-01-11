@@ -22,7 +22,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -31,15 +30,12 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.ScrollingTabContainerView;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 
 public class FragAddBook extends Fragment {
 
@@ -51,10 +47,20 @@ public class FragAddBook extends Fragment {
     private EditText titleField;
     private Spinner spinner;
 
+    //==============================================================================================
+    /**
+     * onCreateView: (overridden method)
+     *  Creates the view of the fragment and binds all the components in the fragment for further
+     *   use.
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return View of the fragment
+     */
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle
-    savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+                             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.frag_addbook_layout, container, false);
 
         titleField = view.findViewById(R.id.addBook_title_edit_text);
@@ -66,8 +72,15 @@ public class FragAddBook extends Fragment {
 
         return view;
     }
-
     //==============================================================================================
+
+    /**
+     * onViewCreated: (overridden method)
+     *  Sets up the fragment and initializes the page. Functions dealing with resetting fields,
+     *   adding books, and user input are initialized here.
+     * @param view
+     * @param savedInstanceState
+     */
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mDatabaseHelper = new DatabaseHelper(getContext());
@@ -126,6 +139,12 @@ public class FragAddBook extends Fragment {
             }
         });
     }
+    //==============================================================================================
+
+    /**
+     * resetAllFields:
+     *  Clears all the fields and sets them to default values.
+     */
     private void resetAllFields() {
         CharSequence empty = "";
         titleField.setText(empty);
@@ -133,6 +152,7 @@ public class FragAddBook extends Fragment {
         readStatus.setChecked(false);
     }
     //==============================================================================================
+
     /**
      * displayMessageMaker:
      *  Generate a popup toast message onto the screen. Primarily to show
@@ -158,7 +178,13 @@ public class FragAddBook extends Fragment {
                 break;
         }
     }
+    //==============================================================================================
 
+    /**
+     * loadShelfNames:
+     *  Extracts the saved shelf names that the user has defined from the shared-preferences.
+     * @return ArrayList of strings holding the shelf names.
+     */
     private ArrayList<String> loadShelfNames() {
         SharedPreferences sharedPreferences = getContext().getSharedPreferences(MainActivity.SHARED_PREFERENCES,
                 MainActivity.MODE_PRIVATE);

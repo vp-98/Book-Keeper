@@ -1,3 +1,19 @@
+/****************************************************************************************
+ * Copyright (c) 2021 Vraj Patel <vrajpatel098@gmail.com>                               *
+ *                                                                                      *
+ * This program is free software; you can redistribute it and/or modify it under        *
+ * the terms of the GNU General Public License as published by the Free Software        *
+ * Foundation; either version 3 of the License, or (at your option) any later           *
+ * version.                                                                             *
+ *                                                                                      *
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY      *
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A      *
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.             *
+ *                                                                                      *
+ * You should have received a copy of the GNU General Public License along with         *
+ * this program.  If not, see <http://www.gnu.org/licenses/>.                           *
+ ****************************************************************************************/
+
 package com.vrajpatel.book_keeper;
 
 import android.content.Context;
@@ -13,15 +29,24 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class ListViewAdapter extends ArrayAdapter<String> {
+
     private static final String TAG = "ListViewAdapter";
     private Context mContext;
     private int mResource;
     private ArrayList<String> shelfNames;
     private onDeleteIconPressListener deleteIconPressListener;
 
+    //==============================================================================================
+    /**
+     * ListViewAdapter:
+     *  Constructor for the custom list view adapter class.
+     * @param context
+     * @param resource
+     * @param objects
+     * @param deleteIconPressListener
+     */
     public ListViewAdapter(@NonNull Context context, int resource, @NonNull ArrayList<String> objects,
                            onDeleteIconPressListener deleteIconPressListener) {
         super(context, resource, objects);
@@ -30,7 +55,17 @@ public class ListViewAdapter extends ArrayAdapter<String> {
         this.shelfNames = objects;
         this.deleteIconPressListener = deleteIconPressListener;
     }
+    //==============================================================================================
 
+    /**
+     * getView: (overridden method)
+     *  Fills in the values corresponding the layout in use for the listview adapter class with
+     *   the shelf name/location. The delete icon is only added for user added items.
+     * @param position
+     * @param convertView
+     * @param parent
+     * @return
+     */
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -56,20 +91,34 @@ public class ListViewAdapter extends ArrayAdapter<String> {
 
         return convertView;
     }
+    //==============================================================================================
 
+    /**
+     * getCount: (overridden method)
+     *  Returns the count of items in the arraylist stored in this class.
+     * @return size of arraylist
+     */
     @Override
     public int getCount() {
         return shelfNames.size();
     }
+    //==============================================================================================
 
+    /**
+     * getItem: (overridden method)
+     *  Returns the item at a certain position.
+     * @param position
+     * @return
+     */
     @Nullable
     @Override
     public String getItem(int position) {
         return shelfNames.get(position);
     }
+    //==============================================================================================
 
+    // Interface used to help facilitate the deleting process
     public interface onDeleteIconPressListener {
         void deleteItem(int position);
     }
-
 }

@@ -22,7 +22,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -30,15 +29,10 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
 
 public class FragSettings extends Fragment implements ListViewAdapter.onDeleteIconPressListener {
 
@@ -57,6 +51,16 @@ public class FragSettings extends Fragment implements ListViewAdapter.onDeleteIc
     private ArrayList<String> shelfNames;
     private ListViewAdapter listViewAdapter;
 
+    //==============================================================================================
+    /**
+     * onCreateView: (overridden method)
+     *  Creates the view of the fragment and binds all the components in the fragment for further
+     *   use.
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return View of the fragment
+     */
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -66,7 +70,13 @@ public class FragSettings extends Fragment implements ListViewAdapter.onDeleteIc
         initShelfNameCard();
         return settingsView;
     }
-    //==================-Functions for Initializing objects in the View-==================
+    //==============================================================================================
+
+    /**
+     * initLayoutPrefCard:
+     *  Initializes the components inside the fragment and sets up respective functions and
+     *   accepts user's sort preference for the recycler view.
+     */
     private void initLayoutPrefCard() {
         Log.d(TAG, "initLayoutPrefCard:  Initialized objects in the layout preference card");
         layoutChoiceSpinner = settingsView.findViewById(R.id.settings_layout_spinner);
@@ -91,14 +101,19 @@ public class FragSettings extends Fragment implements ListViewAdapter.onDeleteIc
             }
         });
     }
+    //==============================================================================================
 
+    /**
+     * initShelfNameCard:
+     *  Initializes the components inside the fragment and sets up respective functions and
+     *   accepts/deletes shelf names.
+     */
     private void initShelfNameCard() {
         Log.d(TAG, "initShelfNameCard: Initialized objects in the naming card");
         shelfName = settingsView.findViewById(R.id.settings_shelf_et);
         addShelfBTN = settingsView.findViewById(R.id.settings_add_btn);
         shelves = settingsView.findViewById(R.id.settings_shelf_names_lv);
         loadShelfNames();
-
 
         listViewAdapter = new ListViewAdapter(getContext(), R.layout.listview_single_item, shelfNames, this);
         shelves.setAdapter(listViewAdapter);
@@ -120,8 +135,13 @@ public class FragSettings extends Fragment implements ListViewAdapter.onDeleteIc
             }
         });
     }
+    //==============================================================================================
 
-    //==================-Functions for Choosing view and applying that=-==================
+    /**
+     * saveViewChoice:
+     *  Saves the sort preference in the shared-preferences.
+     * @param pos
+     */
     private void saveViewChoice(int pos) {
         SharedPreferences sharedPreferences = getContext().getSharedPreferences(MainActivity.SHARED_PREFERENCES,
                 MainActivity.MODE_PRIVATE);
@@ -130,6 +150,12 @@ public class FragSettings extends Fragment implements ListViewAdapter.onDeleteIc
         editor.apply();
     }
 
+    //==============================================================================================
+
+    /**
+     * loadViewChoice:
+     *  Loads the sort preference in the shared-preferences and prefills it into the spinner.
+     */
     private void loadViewChoice() {
         SharedPreferences sharedPreferences = getContext().getSharedPreferences(MainActivity.SHARED_PREFERENCES,
                 MainActivity.MODE_PRIVATE);
@@ -139,7 +165,14 @@ public class FragSettings extends Fragment implements ListViewAdapter.onDeleteIc
         }
         layoutChoiceSpinner.setSelection(selectedChoice);
     }
+    //==============================================================================================
 
+    /**
+     * getItemPosition:
+     *  Gets the index at which the sort preference is located in the spinner.
+     * @param selectedChoice
+     * @return int, the index of sort preference
+     */
     private int getItemPosition(String selectedChoice) {
         int pos = 0;
         switch (selectedChoice) {
@@ -154,17 +187,13 @@ public class FragSettings extends Fragment implements ListViewAdapter.onDeleteIc
         }
         return pos;
     }
+    //==============================================================================================
 
-    //==================-Functions for Naming Shelves and Storing Names-==================
-    private Set<String> getNames() {
-        Set<String> names = new HashSet<String>();
-        for (int i = 0; i < listViewAdapter.getCount(); i++) {
-            names.add(listViewAdapter.getItem(i).toString());
-        }
-        names.add(shelfName.getText().toString());
-        return names;
-    }
-
+    /**
+     * saveShelfName:
+     *  Saves all the shelf names present in the list view into a single string and then saves into
+     *   a shared-preference.
+     */
     private void saveShelfName() {
         StringBuilder newNames = new StringBuilder();
         for (String name : shelfNames) {
@@ -179,7 +208,12 @@ public class FragSettings extends Fragment implements ListViewAdapter.onDeleteIc
         editor.putString(MainActivity.SHELVES, newNames.toString());
         editor.apply();
     }
+    //==============================================================================================
 
+    /**
+     * loadShelfNames:
+     *  Loads all teh shelf names from the shared-preference and breaks apart the string.
+     */
     private void loadShelfNames() {
         SharedPreferences sharedPreferences = getContext().getSharedPreferences(MainActivity.SHARED_PREFERENCES,
                 MainActivity.MODE_PRIVATE);
@@ -192,7 +226,13 @@ public class FragSettings extends Fragment implements ListViewAdapter.onDeleteIc
 
         for (String name : namesArr) { shelfNames.add(name);}
     }
+    //==============================================================================================
 
+    /**
+     * deleteItem: (overridden method)
+     *  Deletes the selected shelf name and removes it from the arraylist.
+     * @param position
+     */
     @Override
     public void deleteItem(int position) {
         String message = "Removed: " + shelfNames.get(position).toString();
