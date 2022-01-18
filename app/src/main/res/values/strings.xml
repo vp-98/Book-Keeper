@@ -1,4 +1,5 @@
 <resources>
+    <!-- Title and App information -->
     <string name="app_name">My Library</string>
 
     <!-- Strings For Bottom Navigation Menu -->
