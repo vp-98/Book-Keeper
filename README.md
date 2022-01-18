@@ -1,6 +1,6 @@
 ![Book-keeper informational banner iamge](images/bookkeeper_banner_readme.png)
 
-# Book-Keeper
+# My Library
 A simple way to keep track of your books!
 
 ## Features
@@ -9,3 +9,12 @@ A simple way to keep track of your books!
 - Search through all the saved books by title and/or by author easily
 - Keep track of books that have been read and those that have not
 - Simple stats page providing statistics of stored books
+
+
+## Android Version and Testing
+Minimum API required: Android 10 (Build code Q)<br />
+Recommended: Android 11
+
+This app has been tested on:
+- Google Pixel 3A with Android 11 (API 30)
+- Samsung Galaxy S20 5G with Android 11 (API 30)
