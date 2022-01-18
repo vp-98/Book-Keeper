@@ -90,7 +90,7 @@ public class FragAddBook extends Fragment {
         ArrayAdapter<String> dropDownArrayAdapter = new ArrayAdapter<String>(getContext(),
                 android.R.layout.simple_spinner_dropdown_item, storedNames);
         spinner.setAdapter(dropDownArrayAdapter);
-        spinner.setSelection(storedNames.size()-1);
+        spinner.setSelection(0);
 
         resetBTN.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -150,6 +150,7 @@ public class FragAddBook extends Fragment {
         titleField.setText(empty);
         authorField.setText(empty);
         readStatus.setChecked(false);
+        readStatus.setText(R.string.read_status_false);
     }
     //==============================================================================================
 

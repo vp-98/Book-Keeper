@@ -18,10 +18,9 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
+            android:gravity="center"
             android:background="@drawable/shape_generic_title_cardview"
-            android:paddingTop="4dp"
             android:text="@string/settings_title_string"
-            android:textAlignment="center"
             android:textColor="@color/primary_gold"
             android:textSize="22sp"
             android:textStyle="italic" />
