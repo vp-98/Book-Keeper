@@ -1,6 +1,6 @@
 ![Book-keeper informational banner iamge](images/bookkeeper_banner_readme.png)
 
-# Book-Keeper
+# My Library
 A simple way to keep track of your books!
 
 ## Features
