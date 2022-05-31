@@ -20,8 +20,6 @@
     </style>
 
     <style name="Switches" >
-
         <item name="colorControlActivated">@color/primary_gold</item>
-
     </style>
 </resources>

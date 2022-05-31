@@ -1,14 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".FragLogin">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <RelativeLayout
+        android:id="@+id/login_holder"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:paddingVertical="20dp"
+        android:paddingHorizontal="70dp">
 
-</FrameLayout>
+        <TextView
+            android:id="@+id/app_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="@string/app_logo"
+            android:fontFamily="cursive"
+            android:textColor="@color/primary_dark"
+            android:textSize="70sp"/>
+
+        <!-- Input Fields -->
+        <EditText
+            android:id="@+id/login_username_field"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/app_logo"
+            android:layout_marginTop="100dp"
+            android:hint="@string/login_username" />
+
+        <EditText
+            android:id="@+id/login_password_field"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/login_username_field"
+            android:layout_marginTop="15dp"
+            android:inputType="textPassword"
+            android:hint="@string/login_password" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/login_remember_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_below="@+id/login_password_field"
+            android:layout_centerHorizontal="true"
+            android:text="@string/login_remember"
+            android:textColor="@color/text_black"
+            android:textSize="16sp"
+            app:trackTint="@color/primary"
+            android:theme="@style/Switches"/>
+
+        <Button
+            android:id="@+id/login_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/login_remember_switch"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="150dp"
+            android:backgroundTint="@color/primary"
+            android:clickable="true"
+            android:focusable="true"
+            android:text="@string/login_btn"
+            android:textAllCaps="false"
+            android:textColor="@color/primary_gold"
+            android:textSize="20sp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/login_btn"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:text="@string/login_signup_sentence"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:id="@+id/login_create_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:layout_marginLeft="10dp"
+                android:textColor="@color/primary_dark"
+                android:text="@string/login_signup_link"
+                android:clickable="true"
+                android:linksClickable="true"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <ProgressBar
+    android:id="@+id/login_progress_bar"
+    android:layout_width="90dp"
+    android:layout_height="90dp"
+    android:layout_centerInParent="true"
+    android:indeterminate="true"
+    android:indeterminateTint="@color/primary_dark"/>
+</RelativeLayout>

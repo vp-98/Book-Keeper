@@ -18,6 +18,24 @@
     <string name="filter_read">Read Books</string>
     <string name="filter_not_read">Not Read Books</string>
 
+    <!-- String for login and signup fragments -->
+    <string name="app_logo">My Library</string>
+    <string name="login_username">Username or email</string>
+    <string name="login_password">Password</string>
+    <string name="login_btn">Login</string>
+    <string name="login_remember">Remember me</string>
+    <string name="login_signup_sentence">Don\'t have an account?</string>
+    <string name="signup_login_sentence">Already have an account?</string>
+    <string name="login_signup_link">Create an Account</string>
+    <string name="signup_login_link">Login</string>
+    <string name="signup_name">Name</string>
+    <string name="signup_username">Username</string>
+    <string name="signup_email">Email</string>
+    <string name="signup_password">Password</string>
+    <string name="signup_password_conf">Confirm password</string>
+    <string name="signup_terms">I agree to the terms of services</string>
+    <string name="signup_btn">Create Account</string>
+
     <!-- Strings For addBook Fragment layout and class -->
     <string name="addbook_title_page">Add a New Book</string>
     <string name="read_status_false">Not Read Yet</string>
@@ -60,6 +78,12 @@
     <string name="settings_layout_title">Manage Layout</string>
     <string name="settings_layout_info">Change how books are presented on main screen:</string>
     <string name="settings_refresh_layout">Refresh</string>
+    <string name="settings_account_title">Manage Account</string>
+    <string name="settings_account_remember">Remember Login info</string>
+    <string name="settings_account_user_tv">Account</string>
+    <string name="settings_transfer_button">Copy</string>
+    <string name="settings_account_user">Username</string>
+    <string name="settings_transfer_books">Copy books and shelves to account</string>
     <string-array name="settings_layout_option">
         <item>Alphabetical by Title</item>
         <item>Alphabetical by Author</item>
@@ -78,9 +102,9 @@
     <string name="appstats_app_version">App Version</string>
     <string name="appstats_database_version">Database Version</string>
     <string name="appstats_modification_data">Last Update</string>
-    <string name="appstats_app_version_number">1.0.1</string>
+    <string name="appstats_app_version_number">1.2.0</string>
     <string name="appstats_database_version_number">2</string>
-    <string name="appstats_modification_data_value">9 January 2022</string>
+    <string name="appstats_modification_data_value">2 March 2022</string>
 
     <string name="appstats_changeLog">Change Log and What\'s New</string>
     <string name="change_log">

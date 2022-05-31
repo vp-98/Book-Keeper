@@ -16,6 +16,15 @@
         <entry key="..\:/App Development/BookKeeperV2/app/src/main/res/layout/recycler_single_item.xml" value="1.0175644028103044" />
         <entry key="..\:/App Development/BookKeeperV2/app/src/main/res/menu/filter_menu.xml" value="1.063231850117096" />
         <entry key="..\:/App Development/BookKeeperV2/app/src/main/res/menu/item_context_menu.xml" value="1.063231850117096" />
+        <entry key="..\:/App Development/MyLibrary/app/src/main/res/drawable/shape_button_round.xml" value="0.4065" />
+        <entry key="..\:/App Development/MyLibrary/app/src/main/res/layout/activity_main.xml" value="0.7616926503340757" />
+        <entry key="..\:/App Development/MyLibrary/app/src/main/res/layout/frag_addbook_layout.xml" value="0.8981264637002342" />
+        <entry key="..\:/App Development/MyLibrary/app/src/main/res/layout/frag_appstats_layout.xml" value="0.9156908665105387" />
+        <entry key="..\:/App Development/MyLibrary/app/src/main/res/layout/frag_bookview_layout.xml" value="0.9156908665105387" />
+        <entry key="..\:/App Development/MyLibrary/app/src/main/res/layout/frag_search_layout.xml" value="0.9156908665105387" />
+        <entry key="..\:/App Development/MyLibrary/app/src/main/res/layout/frag_settings_layout.xml" value="0.9" />
+        <entry key="..\:/App Development/MyLibrary/app/src/main/res/layout/fragment_frag_login.xml" value="0.19160104986876642" />
+        <entry key="..\:/App Development/MyLibrary/app/src/main/res/layout/fragment_frag_sign_up.xml" value="0.8981264637002342" />
       </map>
     </option>
   </component>

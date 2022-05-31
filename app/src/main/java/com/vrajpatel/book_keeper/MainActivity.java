@@ -22,18 +22,43 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.navigation.NavigationBarView;
 
-public class MainActivity extends AppCompatActivity {
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+public class MainActivity extends AppCompatActivity implements FragmentInteractionListener{
 
     // Shared Preferences
     public static final String SHARED_PREFERENCES = "shelves";
     public static final String SHELVES = "shelf_names";
     public static final String VIEW = "layout_view";
+
+    // Shared Preferences to hold user info
+    public static final String USER_SHARED_PREFERENCES = "user";
+    public static final String USER_ID = "userID";
+    public static final String USER_NAME = "name";
+    public static final String USER_EMAIL = "email";
+    public static final String USER_USERNAME = "username";
+    public static final String USER_REMEMBER = "remember";
 
     // Fragment Identifiers
     private final int APP_STATS_FRAGMENT = -2;
@@ -42,8 +67,17 @@ public class MainActivity extends AppCompatActivity {
     private final int ADD_BOOK_FRAGMENT  = 1;
     private final int SETTINGS_FRAGMENT  = 2;
 
+    // Login and Sign up fragment Identifiers
+    public static final int LOGIN_COMPLETE = 0;
+    public static final int LOGIN_FRAGMENT = 3;
+    public static final int SIGNUP_FRAGMENT = 4;
+
     private static final String TAG = "MainActivity";
+    public static final String URL = "http://192.168.0.14/includes/androidAPI.inc.php";
     private NavigationBarView bottomNav;
+    private ProgressBar progressBar;
+    private RelativeLayout activityHolder;
+    private boolean serverConnected;
     private int currentPage;
 
     //==============================================================================================
@@ -64,12 +98,28 @@ public class MainActivity extends AppCompatActivity {
         // Attach the bottom navigation here and listener here
         bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnItemSelectedListener(navListener);
+        activityHolder = findViewById(R.id.main_activity_holder);
+        progressBar = findViewById(R.id.main_progress_bar);
+        progressBar.setVisibility(View.GONE);
 
         // Set default start page to be the book view page
         bottomNav.getMenu().findItem(R.id.nav_bookList).setChecked(true);
+        
+        // Check to see if we are logged in
+        if (loadUser()) {
+            Log.d(TAG, "onCreate: user is remembered...logging in");
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.container_frags,
-                new FragBookView()).commit();
+            checkConnection();
+
+            getSupportFragmentManager().beginTransaction().replace(R.id.container_frags,
+                    new FragBookView(serverConnected)).commit();
+        } else {
+            Log.d(TAG, "onCreate: user not remembered");
+            // Temporary set bottom nav to invisible
+            bottomNav.setVisibility(View.GONE);
+            getSupportFragmentManager().beginTransaction().replace(R.id.container_frags,
+                    new FragLogin()).commit();
+        }
 
     }
     //==============================================================================================
@@ -96,13 +146,13 @@ public class MainActivity extends AppCompatActivity {
                         selectedFrag = new FragAppStats();
                         currentPage = APP_STATS_FRAGMENT;
                     } else if (itemID == R.id.nav_bookList && currentPage != BOOK_VIEW_FRAGMENT) {
-                        selectedFrag = new FragBookView();
+                        selectedFrag = new FragBookView(serverConnected);
                         currentPage = BOOK_VIEW_FRAGMENT;
                     } else if (itemID == R.id.nav_search && currentPage != SEARCH_FRAGMENT) {
                         selectedFrag = new FragSearchBook();
                         currentPage = SEARCH_FRAGMENT;
                     } else if (itemID == R.id.nav_settings && currentPage != SETTINGS_FRAGMENT) {
-                        selectedFrag = new FragSettings();
+                        selectedFrag = new FragSettings(serverConnected);
                         currentPage = SETTINGS_FRAGMENT;
                     } else {
                         Log.e(TAG, "onNavigationItemSelected: Invalid navigation item was selected [ID = " + Integer.toString(itemID));
@@ -137,5 +187,84 @@ public class MainActivity extends AppCompatActivity {
         boolean transitionRight = false;
         if (currentPage > atPage) { transitionRight = true; }
         return transitionRight;
+    }
+
+    //==============================================================================================
+
+    @Override
+    public void changeFrag(int id) {
+        Fragment selectedFrag = null;
+        switch (id) {
+            case LOGIN_FRAGMENT:
+                selectedFrag = new FragLogin();
+                break;
+            case SIGNUP_FRAGMENT:
+                selectedFrag = new FragSignUp();
+                break;
+            case LOGIN_COMPLETE:
+                bottomNav.setVisibility(View.VISIBLE);
+                checkConnection();
+                selectedFrag = new FragBookView(serverConnected);
+                break;
+        }
+        getSupportFragmentManager().beginTransaction().replace(R.id.container_frags, selectedFrag).commit();
+    }
+
+    //==============================================================================================
+
+    private boolean loadUser() {
+        boolean remembered = false;
+        SharedPreferences sharedPreferences = getSharedPreferences(MainActivity.USER_SHARED_PREFERENCES,MainActivity.MODE_PRIVATE);
+        String name = sharedPreferences.getString(MainActivity.USER_NAME, "");
+        String username = sharedPreferences.getString(MainActivity.USER_USERNAME, "");
+        String email = sharedPreferences.getString(MainActivity.USER_EMAIL, "");
+        remembered = sharedPreferences.getBoolean(MainActivity.USER_REMEMBER, false);
+        return remembered && name.length() > 0 && username.length() > 0 && email.length() > 0;
+    }
+
+    //==============================================================================================
+
+    private void checkConnection() {
+        activityHolder.setAlpha(0.5f);
+        progressBar.setVisibility(View.VISIBLE);
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    // Reset the view and hide the progress bar
+                    activityHolder.setAlpha(1f);
+                    progressBar.setVisibility(View.GONE);
+
+                    JSONObject responseOBJ = new JSONObject(response);
+                    boolean error = responseOBJ.getBoolean("error");
+                    Log.d(TAG, "onResponse: " + response);
+                    Log.d(TAG, "onResponse: [CONNECTION] " + serverConnected);
+                    serverConnected = !error;
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                activityHolder.setAlpha(1f);
+                progressBar.setVisibility(View.GONE);
+                Log.e(TAG, "onErrorResponse: " + error.getMessage());
+                Log.d(TAG, "onResponse: [CONNECTION] " + serverConnected);
+                serverConnected = false;
+                Toast.makeText(getApplicationContext(), "Currently Offline", Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("tag", "connection");
+                return params;
+            }
+        };
+        Volley.newRequestQueue(getApplicationContext()).add(stringRequest);
     }
 }

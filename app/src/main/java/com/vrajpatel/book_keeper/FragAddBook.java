@@ -33,9 +33,19 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.snackbar.Snackbar;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class FragAddBook extends Fragment {
 
@@ -46,6 +56,7 @@ public class FragAddBook extends Fragment {
     private EditText authorField;
     private EditText titleField;
     private Spinner spinner;
+    private int userID;
 
     //==============================================================================================
     /**
@@ -62,6 +73,7 @@ public class FragAddBook extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.frag_addbook_layout, container, false);
+        loadUser();
 
         titleField = view.findViewById(R.id.addBook_title_edit_text);
         authorField = view.findViewById(R.id.addBook_author_edit_text);
@@ -120,13 +132,14 @@ public class FragAddBook extends Fragment {
                 String author = authorField.getText().toString();
                 String shelfLocation = spinner.getSelectedItem().toString();
                 boolean readBook = readStatus.isChecked();
-
+                BookModel book = new BookModel(title, title.toLowerCase(), author, readBook, -1, shelfLocation);
                 if (title.length() > 0) {
                     // Attempt to add to DB and report success/failure
                     if (mDatabaseHelper.addData(title, author, title.toLowerCase(), readBook, shelfLocation)) {
                         String message = "Title: " + title + ", Author: " + author;
                         Log.d(TAG, "onClick: Retrieved Information: " + message);
                         displayMessageMaker("Book Added!", 0, null);
+                        if (userID != -999) { addBookToServer(book); }
                         resetAllFields();
                     } else {
                         Log.e(TAG, "onClick: Book was not able to be added: " + title + " by: " + author);
@@ -198,5 +211,45 @@ public class FragAddBook extends Fragment {
 
         for (String name : namesArr) { shelfNames.add(name);}
         return shelfNames;
+    }
+
+    //==============================================================================================
+
+    private void addBookToServer(BookModel book) {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.URL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject responseOBJ = new JSONObject(response);
+                    boolean error = responseOBJ.getBoolean("error");
+                    Log.d(TAG, "onResponse: " + response);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, "onErrorResponse: " + error.getMessage());
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("tag", "add-book");
+                params.put("userID", Integer.toString(userID));
+                params.put("title", book.getTitle());
+                params.put("author", book.getAuthor());
+                params.put("shelf", book.getShelfLocation());
+                params.put("status", book.getReadStatus()? "on" : "none");
+                return params;
+            }
+        };
+        Volley.newRequestQueue(getContext()).add(stringRequest);
+    }
+
+    private void loadUser() {
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences(MainActivity.USER_SHARED_PREFERENCES,MainActivity.MODE_PRIVATE);
+        userID = sharedPreferences.getInt(MainActivity.USER_ID, -1);
     }
 }

@@ -26,13 +26,29 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class FragSettings extends Fragment implements ListViewAdapter.onDeleteIconPressListener {
 
@@ -41,8 +57,12 @@ public class FragSettings extends Fragment implements ListViewAdapter.onDeleteIc
     private View settingsView;
 
     // For layout preference card
+    private RelativeLayout settingsHolder;
+    private ProgressBar progressBar;
     private Button refreshLayoutBTN;
     private Spinner layoutChoiceSpinner;
+    private boolean onlineStatus;
+    private int userID;
 
     // For shelf naming card
     private EditText shelfName;
@@ -51,7 +71,20 @@ public class FragSettings extends Fragment implements ListViewAdapter.onDeleteIc
     private ArrayList<String> shelfNames;
     private ListViewAdapter listViewAdapter;
 
+    // Handling account preferences
+    private TextView accountName;
+    private SwitchCompat remember_switch;
+    private Button transferBTN;
+
+    // Handling the transfer of books and shelves
+    private DatabaseHelper mDatabaseHelper;
+
     //==============================================================================================
+
+    public FragSettings(boolean onlineStatus) {
+        this.onlineStatus = onlineStatus;
+    }
+
     /**
      * onCreateView: (overridden method)
      *  Creates the view of the fragment and binds all the components in the fragment for further
@@ -65,9 +98,14 @@ public class FragSettings extends Fragment implements ListViewAdapter.onDeleteIc
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         settingsView = inflater.inflate(R.layout.frag_settings_layout, container, false);
+        settingsHolder = settingsView.findViewById(R.id.settings_holder);
+        progressBar = settingsView.findViewById(R.id.settings_progress_bar);
+        progressBar.setVisibility(View.GONE);
+
         Log.d(TAG, "onCreateView: creating view of settings page");
         initLayoutPrefCard();
         initShelfNameCard();
+        initAccountCard();
         return settingsView;
     }
     //==============================================================================================
@@ -135,6 +173,129 @@ public class FragSettings extends Fragment implements ListViewAdapter.onDeleteIc
             }
         });
     }
+    //==============================================================================================
+
+    private void initAccountCard() {
+        Log.d(TAG, "initAccountCard: Initialized objects in the account card");
+        accountName = settingsView.findViewById(R.id.settings_user_name);
+        remember_switch = settingsView.findViewById(R.id.settings_account_remember);
+        transferBTN = settingsView.findViewById(R.id.settings_transfer_btn);
+        loadUserData();
+
+        remember_switch.setOnClickListener(v -> {
+            saveUserData(remember_switch.isChecked());
+        });
+
+        transferBTN.setOnClickListener(v -> {
+            if (onlineStatus) {
+                // transfer content
+                settingsHolder.setAlpha(0.2f);
+                progressBar.setVisibility(View.VISIBLE);
+                if (transferShelves()) {
+                    transferBooks();
+                }
+            } else {
+                Toast.makeText(getContext(), "Not Connected to Server", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+    private boolean transferShelves() {
+        boolean transfered = false;
+        for (String shelf : shelfNames) {
+            transfered = addShelfToServer(shelf);
+        }
+        return transfered;
+    }
+
+    private void transferBooks() {
+        mDatabaseHelper = new DatabaseHelper(getContext());
+        // Populate the list
+        ArrayList<BookModel> books = mDatabaseHelper.getStoredBooks();
+        for (BookModel book : books) {
+            addBookToServer(book);
+        }
+    }
+
+    private boolean addShelfToServer(String shelf) {
+        final boolean[] success = {true};
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.URL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    // Reset the view and hide the progress bar
+                    JSONObject responseOBJ = new JSONObject(response);
+                    boolean error = responseOBJ.getBoolean("error");
+                    Log.d(TAG, "onResponse: " + response);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, "onErrorResponse: " + error.getMessage());
+                settingsHolder.setAlpha(1f);
+                progressBar.setVisibility(View.GONE);
+                Toast.makeText(getContext(), "Conenction Lost", Toast.LENGTH_SHORT).show();
+                success[0] = false;
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("tag", "add-shelf");
+                params.put("userID", Integer.toString(userID));
+                params.put("shelfName", shelf);
+                return params;
+            }
+        };
+        Volley.newRequestQueue(getContext()).add(stringRequest);
+        return success[0];
+    }
+
+    private void addBookToServer(BookModel book) {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.URL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    // Reset the view and hide the progress bar
+                    settingsHolder.setAlpha(1f);
+                    progressBar.setVisibility(View.GONE);
+
+                    JSONObject responseOBJ = new JSONObject(response);
+                    boolean error = responseOBJ.getBoolean("error");
+                    Log.d(TAG, "onResponse: " + response);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                settingsHolder.setAlpha(1f);
+                progressBar.setVisibility(View.GONE);
+                Log.e(TAG, "onErrorResponse: " + error.getMessage());
+
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("tag", "add-book");
+                params.put("userID", Integer.toString(userID));
+                params.put("title", book.getTitle());
+                params.put("author", book.getAuthor());
+                params.put("shelf", book.getShelfLocation());
+                params.put("status", book.getReadStatus()? "on" : "none");
+                return params;
+            }
+        };
+        Volley.newRequestQueue(getContext()).add(stringRequest);
+    }
+
     //==============================================================================================
 
     /**
@@ -226,6 +387,26 @@ public class FragSettings extends Fragment implements ListViewAdapter.onDeleteIc
 
         for (String name : namesArr) { shelfNames.add(name);}
     }
+
+    private void loadUserData() {
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences(MainActivity.USER_SHARED_PREFERENCES,
+                MainActivity.MODE_PRIVATE);
+        String username = sharedPreferences.getString(MainActivity.USER_USERNAME, "");
+        userID = sharedPreferences.getInt(MainActivity.USER_ID, -999);
+        boolean remember = sharedPreferences.getBoolean(MainActivity.USER_REMEMBER, false);
+
+        accountName.setText(username);
+        remember_switch.setChecked(remember);
+    }
+
+    private void saveUserData(boolean remember) {
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences(MainActivity.USER_SHARED_PREFERENCES,
+                MainActivity.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(MainActivity.USER_REMEMBER, remember);
+        editor.apply();
+    }
+
     //==============================================================================================
 
     /**
@@ -242,4 +423,5 @@ public class FragSettings extends Fragment implements ListViewAdapter.onDeleteIc
         listViewAdapter.notifyDataSetChanged();
         saveShelfName();
     }
+
 }

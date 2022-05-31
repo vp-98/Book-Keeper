@@ -62,8 +62,15 @@ public class FragBookView extends Fragment implements RecyclerViewAdapter.onDele
     private RecyclerViewAdapter adapter;
     private DatabaseHelper mDatabaseHelper;
     private Context mContext;
+    private boolean onlineStatus;
+    private int userID;
 
     //==============================================================================================
+
+    public FragBookView(boolean onlineStatus) {
+        this.onlineStatus = onlineStatus;
+    }
+
     /**
      * onCreateView:
      *  Creates the view of the fragment and binds all the components in the fragment for further
