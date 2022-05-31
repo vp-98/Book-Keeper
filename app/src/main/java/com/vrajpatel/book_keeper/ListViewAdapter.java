@@ -1,18 +1,18 @@
-/****************************************************************************************
- * Copyright (c) 2021 Vraj Patel <vrajpatel098@gmail.com>                               *
- *                                                                                      *
- * This program is free software; you can redistribute it and/or modify it under        *
- * the terms of the GNU General Public License as published by the Free Software        *
- * Foundation; either version 3 of the License, or (at your option) any later           *
- * version.                                                                             *
- *                                                                                      *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY      *
- * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A      *
- * PARTICULAR PURPOSE. See the GNU General Public License for more details.             *
- *                                                                                      *
- * You should have received a copy of the GNU General Public License along with         *
- * this program.  If not, see <http://www.gnu.org/licenses/>.                           *
- ****************************************************************************************/
+//****************************************************************************************
+//* Copyright (c) 2022 Vraj Patel <vrajpatel098@gmail.com>                               *
+//*                                                                                      *
+//* This program is free software; you can redistribute it and/or modify it under        *
+//* the terms of the GNU General Public License as published by the Free Software        *
+//* Foundation; either version 3 of the License, or (at your option) any later           *
+//* version.                                                                             *
+//*                                                                                      *
+//* This program is distributed in the hope that it will be useful, but WITHOUT ANY      *
+//* WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A      *
+//* PARTICULAR PURPOSE. See the GNU General Public License for more details.             *
+//*                                                                                      *
+//* You should have received a copy of the GNU General Public License along with         *
+//* this program.  If not, see <http://www.gnu.org/licenses/>.                           *
+//****************************************************************************************/
 
 package com.vrajpatel.book_keeper;
 
@@ -33,19 +33,19 @@ import java.util.ArrayList;
 public class ListViewAdapter extends ArrayAdapter<String> {
 
     private static final String TAG = "ListViewAdapter";
-    private Context mContext;
-    private int mResource;
-    private ArrayList<String> shelfNames;
-    private onDeleteIconPressListener deleteIconPressListener;
+    private final Context mContext;
+    private final int mResource;
+    private final ArrayList<String> shelfNames;
+    private final onDeleteIconPressListener deleteIconPressListener;
 
     //==============================================================================================
     /**
      * ListViewAdapter:
      *  Constructor for the custom list view adapter class.
-     * @param context
-     * @param resource
-     * @param objects
-     * @param deleteIconPressListener
+     * @param context                   Context of calling class
+     * @param resource                  Resource identification
+     * @param objects                   Objects that will be used in the list
+     * @param deleteIconPressListener   Delete handler
      */
     public ListViewAdapter(@NonNull Context context, int resource, @NonNull ArrayList<String> objects,
                            onDeleteIconPressListener deleteIconPressListener) {
@@ -61,10 +61,10 @@ public class ListViewAdapter extends ArrayAdapter<String> {
      * getView: (overridden method)
      *  Fills in the values corresponding the layout in use for the listview adapter class with
      *   the shelf name/location. The delete icon is only added for user added items.
-     * @param position
-     * @param convertView
-     * @param parent
-     * @return
+     * @param position          Position of the list item
+     * @param convertView       Convert View
+     * @param parent            Parent Layout
+     * @return View of the list item.
      */
     @NonNull
     @Override
@@ -79,12 +79,7 @@ public class ListViewAdapter extends ArrayAdapter<String> {
         ImageButton deleteIcon = convertView.findViewById(R.id.listview_shelf_delete);
         Log.e(TAG, "getView: Adding: " + location);
         if (!location.equals("Default")) {
-            deleteIcon.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    deleteIconPressListener.deleteItem(position);
-                }
-            });
+            deleteIcon.setOnClickListener(v -> deleteIconPressListener.deleteItem(position));
         } else {
             deleteIcon.setVisibility(View.INVISIBLE);
         }
@@ -106,9 +101,9 @@ public class ListViewAdapter extends ArrayAdapter<String> {
 
     /**
      * getItem: (overridden method)
-     *  Returns the item at a certain position.
-     * @param position
-     * @return
+     *  Returns the shelf name at a certain position from the list of names.
+     * @param position  index of a given shelf name
+     * @return Shelf name at selected position.
      */
     @Nullable
     @Override

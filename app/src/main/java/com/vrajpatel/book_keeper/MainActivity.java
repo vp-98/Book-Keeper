@@ -1,18 +1,18 @@
-/****************************************************************************************
- * Copyright (c) 2021 Vraj Patel <vrajpatel098@gmail.com>                               *
- *                                                                                      *
- * This program is free software; you can redistribute it and/or modify it under        *
- * the terms of the GNU General Public License as published by the Free Software        *
- * Foundation; either version 3 of the License, or (at your option) any later           *
- * version.                                                                             *
- *                                                                                      *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY      *
- * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A      *
- * PARTICULAR PURPOSE. See the GNU General Public License for more details.             *
- *                                                                                      *
- * You should have received a copy of the GNU General Public License along with         *
- * this program.  If not, see <http://www.gnu.org/licenses/>.                           *
- ****************************************************************************************/
+//****************************************************************************************
+//* Copyright (c) 2022 Vraj Patel <vrajpatel098@gmail.com>                               *
+//*                                                                                      *
+//* This program is free software; you can redistribute it and/or modify it under        *
+//* the terms of the GNU General Public License as published by the Free Software        *
+//* Foundation; either version 3 of the License, or (at your option) any later           *
+//* version.                                                                             *
+//*                                                                                      *
+//* This program is distributed in the hope that it will be useful, but WITHOUT ANY      *
+//* WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A      *
+//* PARTICULAR PURPOSE. See the GNU General Public License for more details.             *
+//*                                                                                      *
+//* You should have received a copy of the GNU General Public License along with         *
+//* this program.  If not, see <http://www.gnu.org/licenses/>.                           *
+//****************************************************************************************/
 
 package com.vrajpatel.book_keeper;
 
@@ -33,17 +33,10 @@ public class MainActivity extends AppCompatActivity {
     // Shared Preferences
     public static final String SHARED_PREFERENCES = "shelves";
     public static final String SHELVES = "shelf_names";
+    public static final String LAST_SHELF_NAME = "last_shelf_name";
     public static final String VIEW = "layout_view";
 
-    // Fragment Identifiers
-    private final int APP_STATS_FRAGMENT = -2;
-    private final int SEARCH_FRAGMENT    = -1;
-    private final int BOOK_VIEW_FRAGMENT = 0;
-    private final int ADD_BOOK_FRAGMENT  = 1;
-    private final int SETTINGS_FRAGMENT  = 2;
-
     private static final String TAG = "MainActivity";
-    private NavigationBarView bottomNav;
     private int currentPage;
 
     //==============================================================================================
@@ -51,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
      * onCreate: (overridden method)
      *  Creates the view of the fragment and binds all the components in the fragment for further
      *   use. Sets up the bottom navigation and prepares the fragments when navigating.
-     * @param savedInstanceState
+     * @param savedInstanceState  Saved Instance
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // Attach the bottom navigation here and listener here
-        bottomNav = findViewById(R.id.bottom_navigation);
+        NavigationBarView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnItemSelectedListener(navListener);
 
         // Set default start page to be the book view page
@@ -81,11 +74,18 @@ public class MainActivity extends AppCompatActivity {
      *   and/or set the fragment to the selected one. There is no default case since the app
      *   initially starts out with a provided fragment selected in the onCreate function above.
      */
-    private NavigationBarView.OnItemSelectedListener navListener =
+    private final NavigationBarView.OnItemSelectedListener navListener =
             new NavigationBarView.OnItemSelectedListener() {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                    Fragment selectedFrag = null;
+                    // Fragment Identifiers
+                    final int APP_STATS_FRAGMENT = -2;
+                    final int SEARCH_FRAGMENT    = -1;
+                    final int BOOK_VIEW_FRAGMENT = 0;
+                    final int ADD_BOOK_FRAGMENT  = 1;
+                    final int SETTINGS_FRAGMENT  = 2;
+
+                    Fragment selectedFrag;
                     int previousPage = currentPage;
                     // get the next fragment
                     int itemID = item.getItemId();
@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
                         selectedFrag = new FragSettings();
                         currentPage = SETTINGS_FRAGMENT;
                     } else {
-                        Log.e(TAG, "onNavigationItemSelected: Invalid navigation item was selected [ID = " + Integer.toString(itemID));
+                        Log.e(TAG, "onNavigationItemSelected: Invalid navigation item was selected [ID = " + itemID);
                         return false;
                     }
 
@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
                     Log.d(TAG, "onNavigationItemSelected: Transition to new fragment.");
                     FragmentManager fragmentManager = getSupportFragmentManager();
                     FragmentTransaction transaction = fragmentManager.beginTransaction();
-                    if (determineTransitionAnimation(previousPage)) {
+                    if (currentPage > previousPage) {
                         transaction.setCustomAnimations(R.anim.anim_enter_from_right, R.anim.anim_exit_to_right);
                     } else {
                         transaction.setCustomAnimations(R.anim.anim_enter_from_left, R.anim.anim_exit_to_left);
@@ -123,19 +123,4 @@ public class MainActivity extends AppCompatActivity {
                 }
             };
     //==============================================================================================
-
-    /**
-     * determineTransitionAnimation
-     *   This function is used to determine which directions to set the animations. Using the
-     *    int values that represent pages, the proper transition is chosen. True indicates right,
-     *    false indicates left.
-     *
-     * @param atPage    the current page/fragment that the user is on
-     * @return boolean  true if navigating right, else false
-     */
-    private boolean determineTransitionAnimation(int atPage) {
-        boolean transitionRight = false;
-        if (currentPage > atPage) { transitionRight = true; }
-        return transitionRight;
-    }
 }

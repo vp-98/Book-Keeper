@@ -1,18 +1,18 @@
-/****************************************************************************************
- * Copyright (c) 2021 Vraj Patel <vrajpatel098@gmail.com>                               *
- *                                                                                      *
- * This program is free software; you can redistribute it and/or modify it under        *
- * the terms of the GNU General Public License as published by the Free Software        *
- * Foundation; either version 3 of the License, or (at your option) any later           *
- * version.                                                                             *
- *                                                                                      *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY      *
- * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A      *
- * PARTICULAR PURPOSE. See the GNU General Public License for more details.             *
- *                                                                                      *
- * You should have received a copy of the GNU General Public License along with         *
- * this program.  If not, see <http://www.gnu.org/licenses/>.                           *
- ****************************************************************************************/
+//****************************************************************************************
+//* Copyright (c) 2022 Vraj Patel <vrajpatel098@gmail.com>                               *
+//*                                                                                      *
+//* This program is free software; you can redistribute it and/or modify it under        *
+//* the terms of the GNU General Public License as published by the Free Software        *
+//* Foundation; either version 3 of the License, or (at your option) any later           *
+//* version.                                                                             *
+//*                                                                                      *
+//* This program is distributed in the hope that it will be useful, but WITHOUT ANY      *
+//* WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A      *
+//* PARTICULAR PURPOSE. See the GNU General Public License for more details.             *
+//*                                                                                      *
+//* You should have received a copy of the GNU General Public License along with         *
+//* this program.  If not, see <http://www.gnu.org/licenses/>.                           *
+//****************************************************************************************/
 
 package com.vrajpatel.book_keeper;
 
@@ -41,6 +41,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -68,9 +69,9 @@ public class FragBookView extends Fragment implements RecyclerViewAdapter.onDele
      * onCreateView:
      *  Creates the view of the fragment and binds all the components in the fragment for further
      *   use.
-     * @param inflater
-     * @param container
-     * @param savedInstanceState
+     * @param inflater             Inflater which will inflate the layout
+     * @param container            Container which will hold the view
+     * @param savedInstanceState   Saved instance
      * @return View of the fragment
      */
     @Nullable
@@ -89,8 +90,8 @@ public class FragBookView extends Fragment implements RecyclerViewAdapter.onDele
      *  onViewCreated:
      *   Sets up the fragment and initializes the page. Sorts the contents of the page depending
      *    on user's preference and sets up a custom recycler adapter. Requires Android 7.0.
-     * @param view
-     * @param savedInstanceState
+     * @param view                 View to create
+     * @param savedInstanceState   Saved instance
      */
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
@@ -168,7 +169,7 @@ public class FragBookView extends Fragment implements RecyclerViewAdapter.onDele
         if (selectedChoice == -1) {
             selectedChoice = 0;
         }
-        Log.d(TAG, "loadViewChoice: choice" + Integer.toString(selectedChoice));
+        Log.d(TAG, "loadViewChoice: choice" + selectedChoice);
         return selectedChoice;
     }
 
@@ -177,9 +178,9 @@ public class FragBookView extends Fragment implements RecyclerViewAdapter.onDele
     /**
      * onCreateContextMenu: (overridden method)
      *  Generates an option menu for each of the items in the recycler view.
-     * @param menu
-     * @param v
-     * @param menuInfo
+     * @param menu        Menu that will be used
+     * @param v           View that will hold the menu
+     * @param menuInfo    Menu info
      */
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
@@ -192,7 +193,7 @@ public class FragBookView extends Fragment implements RecyclerViewAdapter.onDele
     /**
      * deleteItem: (overridden method)
      *  Deletes the item that is selected on the recycler view.
-     * @param position
+     * @param position  Position of the item to delete.
      */
     @Override
     public void deleteItem(int position) {
@@ -209,7 +210,7 @@ public class FragBookView extends Fragment implements RecyclerViewAdapter.onDele
     /**
      * openEditFragment: (overridden method)
      *  Generates a popup dialog with fields pre-filled with the selected book's information.
-     * @param position
+     * @param position Position of item to edit.
      */
     @Override
     public void openEditFragment(int position) {
@@ -218,9 +219,9 @@ public class FragBookView extends Fragment implements RecyclerViewAdapter.onDele
     //==============================================================================================
 
     /**
-     * genereatePopup:
+     * generatePopup:
      *  Creates a small popup dialog/window allowing the user to edit any of the book's fields.
-     * @param book
+     * @param book  Book that will be modified or removed.
      */
     public void generatePopup(BookModel book) {
         Log.d(TAG, "generatePopup: Generating A new Popup Option");
@@ -237,7 +238,7 @@ public class FragBookView extends Fragment implements RecyclerViewAdapter.onDele
 
         // Add shelves the spinner
         ArrayList<String> storedNames = loadShelfNames();
-        ArrayAdapter<String> dropDownArrayAdapter = new ArrayAdapter<String>(getContext(),
+        ArrayAdapter<String> dropDownArrayAdapter = new ArrayAdapter<>(getContext(),
                 android.R.layout.simple_spinner_dropdown_item, storedNames);
         spinner.setAdapter(dropDownArrayAdapter);
 
@@ -254,41 +255,32 @@ public class FragBookView extends Fragment implements RecyclerViewAdapter.onDele
         dialog = dialogBuilder.create();
         dialog.show();
 
-        readSwitch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (readSwitch.isChecked()) {
-                    readSwitch.setText(R.string.pop_is_read_switch_true);
-                } else {
-                    readSwitch.setText(R.string.pop_is_read_switch_false);
-                }
+        readSwitch.setOnClickListener(v -> {
+            if (readSwitch.isChecked()) {
+                readSwitch.setText(R.string.pop_is_read_switch_true);
+            } else {
+                readSwitch.setText(R.string.pop_is_read_switch_false);
             }
         });
-        cancelBTN.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss(); // Close dialog
-            }
+        cancelBTN.setOnClickListener(v -> {
+            dialog.dismiss(); // Close dialog
         });
-        updateBTN.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Retrieve data from the text field and update book
-                String title = titleField.getText().toString();
-                String author = authorField.getText().toString();
-                String shelfLocation = spinner.getSelectedItem().toString();
-                boolean newStatus = readSwitch.isChecked();
+        updateBTN.setOnClickListener(v -> {
+            // Retrieve data from the text field and update book
+            String title = titleField.getText().toString();
+            String author = authorField.getText().toString();
+            String shelfLocation = spinner.getSelectedItem().toString();
+            boolean newStatus = readSwitch.isChecked();
 
-                book.setAuthor(author);
-                book.setTitle(title);
-                book.setTitleLowerCase(title.toLowerCase());
-                book.setReadStatus(newStatus);
-                book.setShelfLocation(shelfLocation);
+            book.setAuthor(author);
+            book.setTitle(title);
+            book.setTitleLowerCase(title.toLowerCase());
+            book.setReadStatus(newStatus);
+            book.setShelfLocation(shelfLocation);
 
-                mDatabaseHelper.updateCol(book);
-                adapter.notifyDataSetChanged();
-                dialog.dismiss();
-            }
+            mDatabaseHelper.updateCol(book);
+            adapter.notifyDataSetChanged();
+            dialog.dismiss();
         });
     }
     //==============================================================================================
@@ -306,9 +298,7 @@ public class FragBookView extends Fragment implements RecyclerViewAdapter.onDele
         if (storedNames.length() == 0) { storedNames = "Default";}
 
         String[] namesArr = storedNames.split("@",-1);
-        ArrayList<String> shelfNames = new ArrayList<String>();
 
-        for (String name : namesArr) { shelfNames.add(name);}
-        return shelfNames;
+        return new ArrayList<>(Arrays.asList(namesArr));
     }
 }

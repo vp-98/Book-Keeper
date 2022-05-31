@@ -1,18 +1,18 @@
-/****************************************************************************************
- * Copyright (c) 2021 Vraj Patel <vrajpatel098@gmail.com>                               *
- *                                                                                      *
- * This program is free software; you can redistribute it and/or modify it under        *
- * the terms of the GNU General Public License as published by the Free Software        *
- * Foundation; either version 3 of the License, or (at your option) any later           *
- * version.                                                                             *
- *                                                                                      *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY      *
- * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A      *
- * PARTICULAR PURPOSE. See the GNU General Public License for more details.             *
- *                                                                                      *
- * You should have received a copy of the GNU General Public License along with         *
- * this program.  If not, see <http://www.gnu.org/licenses/>.                           *
- ****************************************************************************************/
+//****************************************************************************************
+//* Copyright (c) 2022 Vraj Patel <vrajpatel098@gmail.com>                               *
+//*                                                                                      *
+//* This program is free software; you can redistribute it and/or modify it under        *
+//* the terms of the GNU General Public License as published by the Free Software        *
+//* Foundation; either version 3 of the License, or (at your option) any later           *
+//* version.                                                                             *
+//*                                                                                      *
+//* This program is distributed in the hope that it will be useful, but WITHOUT ANY      *
+//* WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A      *
+//* PARTICULAR PURPOSE. See the GNU General Public License for more details.             *
+//*                                                                                      *
+//* You should have received a copy of the GNU General Public License along with         *
+//* this program.  If not, see <http://www.gnu.org/licenses/>.                           *
+//****************************************************************************************/
 
 package com.vrajpatel.book_keeper;
 
@@ -46,6 +46,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class FragSearchBook extends Fragment implements PopupMenu.OnMenuItemClickListener,
         RecyclerViewAdapter.onDeleteCallListener, RecyclerViewAdapter.onEditCallListener {
@@ -83,9 +84,9 @@ public class FragSearchBook extends Fragment implements PopupMenu.OnMenuItemClic
      * onCreateView: (overridden method)
      *  Creates the view of the fragment and binds all the components in the fragment for further
      *   use.
-     * @param inflater
-     * @param container
-     * @param savedInstanceState
+     * @param inflater              Inflater which will inflate the layout
+     * @param container             Container that will hold the view
+     * @param savedInstanceState    Saved instance
      * @return View of the fragment
      */
     @Nullable
@@ -122,8 +123,8 @@ public class FragSearchBook extends Fragment implements PopupMenu.OnMenuItemClic
      *  Sets up the fragment and initializes the page for searching. Initializes components of
      *   the fragment and sets up a recycler view with a custom adapter. Filters recycler view
      *   depending on the user's search.
-     * @param view
-     * @param savedInstanceState
+     * @param view  View that will be created
+     * @param savedInstanceState Saved Instance
      */
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -140,12 +141,7 @@ public class FragSearchBook extends Fragment implements PopupMenu.OnMenuItemClic
         registerForContextMenu(recyclerView);
 
         // Allows the search bar to be opened fully
-        searchBar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                searchBar.setIconified(false);
-            }
-        });
+        searchBar.setOnClickListener(v -> searchBar.setIconified(false));
         // Modify results as characters are inserted into the search
         searchBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -159,12 +155,9 @@ public class FragSearchBook extends Fragment implements PopupMenu.OnMenuItemClic
         });
 
         // Icon for filter listener
-        filterIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                popupMenuLocationView = v;
-                showFilterMenu(v);
-            }
+        filterIcon.setOnClickListener(v -> {
+            popupMenuLocationView = v;
+            showFilterMenu(v);
         });
     }
     //==============================================================================================
@@ -172,12 +165,12 @@ public class FragSearchBook extends Fragment implements PopupMenu.OnMenuItemClic
     /**
      * onCreateContextMenu:
      *  Generates an option menu for each item present in the recycler view.
-     * @param menu
-     * @param v
-     * @param menuInfo
+     * @param menu     Menu that will be added to each item.
+     * @param v        View for the menu
+     * @param menuInfo Menu Info
      */
     @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+    public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
         MenuInflater inflater = getActivity().getMenuInflater();
         inflater.inflate(R.menu.item_context_menu, menu);
@@ -188,7 +181,7 @@ public class FragSearchBook extends Fragment implements PopupMenu.OnMenuItemClic
      * showFilterMenu:
      *  Creates the filter menu that pops up for the filter options and accepts the user's selected
      *   filter options.
-     * @param view
+     * @param view View for the filter menu
      */
     private void showFilterMenu(View view) {
         popupMenu = new PopupMenu(view.getContext(), view);
@@ -205,20 +198,18 @@ public class FragSearchBook extends Fragment implements PopupMenu.OnMenuItemClic
      * onMenuClick: (overridden method)
      *  Registers the menu clicks from the filter menu. The selected options from the menu will are
      *   then used to filter the results.
-     * @param item
-     * @return
+     * @param item  Item in the menu
+     * @return false
      */
     @Override
     public boolean onMenuItemClick(MenuItem item) {
 
-        switch (item.getItemId()) {
-            case R.id.filter_not_read_books:
-                notRead = !item.isChecked();
-                break;
-            case R.id.filter_read_books:
-                read = !item.isChecked();
-                break;
+        if (item.getItemId() == R.id.filter_not_read_books) {
+            notRead = !item.isChecked();
+        } else if (item.getItemId() == R.id.filter_read_books) {
+            read = !item.isChecked();
         }
+
         adapter.provideFilters(read, notRead, searchQuery);
         item.setChecked(!item.isChecked());
         item.setShowAsAction(MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
@@ -241,7 +232,7 @@ public class FragSearchBook extends Fragment implements PopupMenu.OnMenuItemClic
     /**
      * deleteItem: (overridden method)
      *  Deletes the item that is selected on the recycler view.
-     * @param position
+     * @param position Position of item to delete.
      */
     @Override
     public void deleteItem(int position) {
@@ -257,7 +248,7 @@ public class FragSearchBook extends Fragment implements PopupMenu.OnMenuItemClic
     /**
      * openEditFragment: (overridden method)
      *  Generates a popup dialog with fields pre-filled with the selected book's information.
-     * @param position
+     * @param position Position of item to edit.
      */
     @Override
     public void openEditFragment(int position) {
@@ -268,7 +259,7 @@ public class FragSearchBook extends Fragment implements PopupMenu.OnMenuItemClic
     /**
      * generatePopup:
      *  Creates a small popup dialog/window allowing the user to edit any of the book's fields.
-     * @param book
+     * @param book Book that will be modified/removed
      */
     public void generatePopup(BookModel book) {
         Log.d(TAG, "generatePopup: Generating A new Popup Option");
@@ -285,7 +276,7 @@ public class FragSearchBook extends Fragment implements PopupMenu.OnMenuItemClic
 
         // Add shelves the spinner
         ArrayList<String> storedNames = loadShelfNames();
-        ArrayAdapter<String> dropDownArrayAdapter = new ArrayAdapter<String>(getContext(),
+        ArrayAdapter<String> dropDownArrayAdapter = new ArrayAdapter<>(getContext(),
                 android.R.layout.simple_spinner_dropdown_item, storedNames);
         spinner.setAdapter(dropDownArrayAdapter);
 
@@ -302,42 +293,33 @@ public class FragSearchBook extends Fragment implements PopupMenu.OnMenuItemClic
         dialog = dialogBuilder.create();
         dialog.show();
 
-        readSwitch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (readSwitch.isChecked()) {
-                    readSwitch.setText(R.string.pop_is_read_switch_true);
-                } else {
-                    readSwitch.setText(R.string.pop_is_read_switch_false);
-                }
+        readSwitch.setOnClickListener(v -> {
+            if (readSwitch.isChecked()) {
+                readSwitch.setText(R.string.pop_is_read_switch_true);
+            } else {
+                readSwitch.setText(R.string.pop_is_read_switch_false);
             }
         });
 
-        cancelBTN.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss(); // Close dialog
-            }
+        cancelBTN.setOnClickListener(v -> {
+            dialog.dismiss(); // Close dialog
         });
-        updateBTN.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Retrieve data from the text field and update book
-                String title = titleField.getText().toString();
-                String author = authorField.getText().toString();
-                String shelfLocation = spinner.getSelectedItem().toString();
-                boolean newStatus = readSwitch.isChecked();
+        updateBTN.setOnClickListener(v -> {
+            // Retrieve data from the text field and update book
+            String title = titleField.getText().toString();
+            String author = authorField.getText().toString();
+            String shelfLocation = spinner.getSelectedItem().toString();
+            boolean newStatus = readSwitch.isChecked();
 
-                book.setAuthor(author);
-                book.setTitle(title);
-                book.setTitleLowerCase(title.toLowerCase());
-                book.setReadStatus(newStatus);
-                book.setShelfLocation(shelfLocation);
+            book.setAuthor(author);
+            book.setTitle(title);
+            book.setTitleLowerCase(title.toLowerCase());
+            book.setReadStatus(newStatus);
+            book.setShelfLocation(shelfLocation);
 
-                mDatabaseHelper.updateCol(book);
-                adapter.notifyDataSetChanged();
-                dialog.dismiss();
-            }
+            mDatabaseHelper.updateCol(book);
+            adapter.notifyDataSetChanged();
+            dialog.dismiss();
         });
     }
     //==============================================================================================
@@ -355,9 +337,7 @@ public class FragSearchBook extends Fragment implements PopupMenu.OnMenuItemClic
         if (storedNames.length() == 0) { storedNames = "Default";}
 
         String[] namesArr = storedNames.split("@",-1);
-        ArrayList<String> shelfNames = new ArrayList<String>();
 
-        for (String name : namesArr) { shelfNames.add(name);}
-        return shelfNames;
+        return new ArrayList<>(Arrays.asList(namesArr));
     }
 }

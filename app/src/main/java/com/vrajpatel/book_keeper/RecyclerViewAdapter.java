@@ -1,18 +1,18 @@
-/****************************************************************************************
- * Copyright (c) 2021 Vraj Patel <vrajpatel098@gmail.com>                               *
- *                                                                                      *
- * This program is free software; you can redistribute it and/or modify it under        *
- * the terms of the GNU General Public License as published by the Free Software        *
- * Foundation; either version 3 of the License, or (at your option) any later           *
- * version.                                                                             *
- *                                                                                      *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY      *
- * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A      *
- * PARTICULAR PURPOSE. See the GNU General Public License for more details.             *
- *                                                                                      *
- * You should have received a copy of the GNU General Public License along with         *
- * this program.  If not, see <http://www.gnu.org/licenses/>.                           *
- ****************************************************************************************/
+//****************************************************************************************
+//* Copyright (c) 2022 Vraj Patel <vrajpatel098@gmail.com>                               *
+//*                                                                                      *
+//* This program is free software; you can redistribute it and/or modify it under        *
+//* the terms of the GNU General Public License as published by the Free Software        *
+//* Foundation; either version 3 of the License, or (at your option) any later           *
+//* version.                                                                             *
+//*                                                                                      *
+//* This program is distributed in the hope that it will be useful, but WITHOUT ANY      *
+//* WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A      *
+//* PARTICULAR PURPOSE. See the GNU General Public License for more details.             *
+//*                                                                                      *
+//* You should have received a copy of the GNU General Public License along with         *
+//* this program.  If not, see <http://www.gnu.org/licenses/>.                           *
+//****************************************************************************************/
 
 package com.vrajpatel.book_keeper;
 
@@ -39,12 +39,11 @@ import java.util.List;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder> implements Filterable {
 
-    private static final String TAG = "RecyclerViewAdapter";
-    private ArrayList<BookModel> books;
-    private ArrayList<BookModel> allBooks;   // will hold all the books that are present
-    private Context mContext;
-    private onDeleteCallListener deleteCallListener;
-    private onEditCallListener editCallListener;
+    private final ArrayList<BookModel> books;
+    private final ArrayList<BookModel> allBooks;   // will hold all the books that are present
+    private final Context mContext;
+    private final onDeleteCallListener deleteCallListener;
+    private final onEditCallListener editCallListener;
 
     // Search filter booleans
     private boolean read;
@@ -54,20 +53,18 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener,
             PopupMenu.OnMenuItemClickListener {
 
-        private static final String TAG = "MyViewHolder";
         TextView tvTitleField;         // Item in layout to fill title
         TextView tvAuthorField;        // Item in layout to fill author
         TextView tvLocationField;      // Item in layout to fill location
         ImageButton moreOptions;       // Clickable feature on the recycler view
         ImageView readIcon;            // Item in layout to set check mark
-        onDeleteCallListener deleteCallListener2;
 
         //==========================================================================================
         /**
          * MyViewHolder:
          *  This will attach the textViews from the layout to the holder class. It will also
          *   add a onClick listener for each item and buttonImage click for each item.
-         * @param itemView
+         * @param itemView Constructor for the Item holder
          */
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -84,7 +81,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
          * onCLick: (overridden method)
          *  Calls the onNoteClick function when a click is registered on the item. Requires Android
          *   10.
-         * @param v
+         * @param v View of the item.
          */
         @Override
         @RequiresApi(api = Build.VERSION_CODES.Q)
@@ -97,7 +94,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
          * showContextMenu: (overridden method)
          *  Creates and shows the menu for each item that is present in the recycler view. Requires
          *   Android 10.
-         * @param view
+         * @param view View for the context menu for each item.
          */
         @RequiresApi(api = Build.VERSION_CODES.Q)
         private void showContextMenu(View view) {
@@ -112,22 +109,20 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         /**
          * onMenuItemClick: (overridden method)
          *  Registers the clicks to certain menu items and performs the respective tasks.
-         * @param item
-         * @return
+         * @param item Item listed in the menu.
+         * @return True if item is selected, else false.
          */
         @Override
         public boolean onMenuItemClick(MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.context_edit:
-                    editCallListener.openEditFragment(getAdapterPosition());
-                    return true;
-                case R.id.context_delete:
-                    // remove from Database here
-                    deleteCallListener.deleteItem(getAdapterPosition());
-                    return true;
-                default:
-                    return false;
+            if (item.getItemId() == R.id.context_edit) {
+                editCallListener.openEditFragment(getAdapterPosition());
+                return true;
+            } else if (item.getItemId() == R.id.context_delete) {
+                // remove from Database here
+                deleteCallListener.deleteItem(getAdapterPosition());
+                return true;
             }
+            return false;
         }
     }
     //==============================================================================================
@@ -138,10 +133,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
      * RecyclerViewAdapter:
      *  Constructs custom adapter with all the a list of books, context, and onClickListeners for
      *   certain tasks.
-     * @param books
-     * @param mContext
-     * @param deleteCallListener
-     * @param editCallListener
+     * @param books                All the books to be populated in the list
+     * @param mContext             Context of calling class
+     * @param deleteCallListener   Delete handler
+     * @param editCallListener     Edit Handler
      */
     public RecyclerViewAdapter(ArrayList<BookModel> books, Context mContext,
                                onDeleteCallListener deleteCallListener,
@@ -158,9 +153,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     /**
      * onCreateViewHolder: (overridden method)
      *  Creates the view and takes in a single row layout that will be used for the recycler view.
-     * @param parent
-     * @param viewType
-     * @return
+     * @param parent     Parent View
+     * @param viewType   View Type ID
+     * @return ViewHolder Item constructed.
      */
     @NonNull
     @Override
@@ -175,8 +170,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
      * onBindViewHolder: (overridden method)
      *  Attaches the content to the view using the ViewHolder class. Sets all respective fields in
      *   the layout file with the information from the list of books.
-     * @param holder
-     * @param position
+     * @param holder    Item that holds the view
+     * @param position  Position of item.
      */
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
@@ -196,7 +191,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
      * getItemCount: (overridden method)
      *  This will return the number of items stored in the list that will be displayed in the
      *   recycler view.
-     * @return
+     * @return count of books.
      */
     @Override
     public int getItemCount() {
@@ -224,7 +219,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
      * getFilter:
      *  Create the initial filter request. Filtering will occur on the back thread to prevent
      *   the app from slowing down when filtering large quantities.
-     * @return
+     * @return Initial filter request.
      */
     @Override
     public Filter getFilter() {
@@ -237,14 +232,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
      *  Performs the filtering and provides feedback to the UI fragment (search fragment) after
      *   providing any user provided search constraints.
      */
-    private Filter searchFilter = new Filter() {
+    private final Filter searchFilter = new Filter() {
         // Executing on the background thread
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
-            ArrayList<BookModel> filteredList = new ArrayList<>();
+            ArrayList<BookModel> filteredList;
 
             if (constraint == null || constraint.length() == 0) {
-                filteredList.addAll(generateSearchResults(""));
+                filteredList = new ArrayList<>(generateSearchResults(""));
             } else {
                 String filterQuery = constraint.toString().toLowerCase().trim();
                 filteredList = generateSearchResults(filterQuery);
@@ -258,7 +253,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
             books.clear();
-            books.addAll((List) results.values);
+            books.addAll((List<BookModel>) results.values);
             notifyDataSetChanged();
         }
     };
@@ -267,7 +262,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     /**
      * generateSearchResults:
      *  Helper function that narrows down the search results and applies any filter constraints.
-     * @param query
+     * @param query Search/Filter query entered by user.
      * @return Arraylist of filtered books
      */
     private ArrayList<BookModel> generateSearchResults(String query) {

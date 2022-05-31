@@ -1,18 +1,18 @@
-/****************************************************************************************
- * Copyright (c) 2021 Vraj Patel <vrajpatel098@gmail.com>                               *
- *                                                                                      *
- * This program is free software; you can redistribute it and/or modify it under        *
- * the terms of the GNU General Public License as published by the Free Software        *
- * Foundation; either version 3 of the License, or (at your option) any later           *
- * version.                                                                             *
- *                                                                                      *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY      *
- * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A      *
- * PARTICULAR PURPOSE. See the GNU General Public License for more details.             *
- *                                                                                      *
- * You should have received a copy of the GNU General Public License along with         *
- * this program.  If not, see <http://www.gnu.org/licenses/>.                           *
- ****************************************************************************************/
+//****************************************************************************************
+//* Copyright (c) 2022 Vraj Patel <vrajpatel098@gmail.com>                               *
+//*                                                                                      *
+//* This program is free software; you can redistribute it and/or modify it under        *
+//* the terms of the GNU General Public License as published by the Free Software        *
+//* Foundation; either version 3 of the License, or (at your option) any later           *
+//* version.                                                                             *
+//*                                                                                      *
+//* This program is distributed in the hope that it will be useful, but WITHOUT ANY      *
+//* WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A      *
+//* PARTICULAR PURPOSE. See the GNU General Public License for more details.             *
+//*                                                                                      *
+//* You should have received a copy of the GNU General Public License along with         *
+//* this program.  If not, see <http://www.gnu.org/licenses/>.                           *
+//****************************************************************************************/
 
 package com.vrajpatel.book_keeper;
 
@@ -47,7 +47,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * DatabaseHelper (constructor):
      * Before pushing update to the phone, make sure that the database version matches that of
      *   the actual user's phone, otherwise make sure to switch back to the correct one for testing.
-     * @param context
+     * @param context Context of calling class.
      */
     public DatabaseHelper(Context context) {
         super(context, TABLE_NAME, null,2);
@@ -59,7 +59,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     /**
      * onCreate: (overridden method)
      * Creates a new data table if needed with the columns stated.
-     * @param sqLiteDatabase
+     * @param sqLiteDatabase SQ-lite database
      */
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
@@ -75,9 +75,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     /**
      * onUpgrade: (overridden method)
      *  Upgrades data table when a new version is detected.
-     * @param sqLiteDatabase
-     * @param oldVersion
-     * @param newVersion
+     * @param sqLiteDatabase  SQ-lite database
+     * @param oldVersion      Older version of SQ-lite database
+     * @param newVersion      New version of SQ-lite database
      */
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
@@ -86,8 +86,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             sqLiteDatabase.execSQL("ALTER TABLE " + TABLE_NAME + " ADD COLUMN " +
                     COL_SHELF_LOCATION + " TEXT DEFAULT 'Default'");
             Log.d(TAG, "onUpgrade: Added new column");
-            //sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
-            //onCreate(sqLiteDatabase);
         }
     }
     //==============================================================================================
@@ -115,11 +113,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     /**
      * addData:
      *  Taking the provided item, add it to the database if it does not exist.
-     * @param title
-     * @param author
-     * @param titleLowerCase
-     * @param readStatus
-     * @param shelfLocation
+     * @param title            Title of the book to add
+     * @param author           Author of the book to add
+     * @param titleLowerCase   Lowercase title of the book to add
+     * @param readStatus       Read status of the book to add
+     * @param shelfLocation    Shelf location of the book to add
      * @return boolean         True if book was saved, else false
      */
     public boolean addData(String title, String author, String titleLowerCase, boolean readStatus,
@@ -149,7 +147,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     /**
      * deleteBookWithID:
      *  Removes the book using the provided book. The ID is extracted from the Book class directly.
-     * @param book
+     * @param book  Book that will be removed.
      * @return boolean    True by default
      */
     public boolean deleteBookWithID(BookModel book) {
