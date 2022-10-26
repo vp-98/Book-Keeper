@@ -1,7 +1,7 @@
 ![Book-keeper informational banner iamge](images/bookkeeper_banner_readme.png)
 
 # My Library
-A simple way to keep track of your books!
+A simple way to keep track of your books! Click [here](https://github.com/vp-98/My_Library) to view the React Native version.
 
 ## Features
 - Store book information locally
